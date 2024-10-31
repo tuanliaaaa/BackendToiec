@@ -9,6 +9,9 @@ public enum StatusCodeEnum {
     EXCEPTION0504("EXCEPTION0504"), // Missing servlet request parameter
     EXCEPTION0505("EXCEPTION0505"), // Access Denied/Not have permission
 
+    //Auth
+    SUCCESS("SUCCESS"),
+
     //USER
     USERTEST0000("USER0000"), // Create user test success
     USERTEST1000("USER1000"); // Create user test failed

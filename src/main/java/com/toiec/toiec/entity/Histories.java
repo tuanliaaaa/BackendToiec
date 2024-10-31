@@ -15,6 +15,7 @@ public class Histories {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "idLesson")
+    @JoinColumn(name = "idLesson",nullable = true)
     private Lesson lesson;
+
 }

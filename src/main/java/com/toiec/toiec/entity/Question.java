@@ -3,18 +3,22 @@ package com.toiec.toiec.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Entity
 @Data
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idQuestion;
+    private Integer idQuestion;
 
-    private int value;
+    private String value;
 
     @ManyToOne
-    @JoinColumn(name = "idExercise")
-    private Exercise exercise;
-
-    private boolean isTrue;
+    @JoinColumn(name = "idLesson")
+    private Lesson lesson;
+    private String type;
+    private String explain;
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+    private List<Answer> answers;
 }

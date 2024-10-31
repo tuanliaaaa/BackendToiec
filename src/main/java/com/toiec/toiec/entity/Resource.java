@@ -8,13 +8,10 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Lesson {
+public class Resource {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idLesson;
-
-    private String nameLesson;
-    private String type;
-    private String content;
-    private String theory;
+    private Integer idResource;
+    private String resoureType;
+    private String contentResource;
 }

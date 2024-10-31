@@ -14,6 +14,7 @@ public class RefreshToken {
     @ManyToOne
     @JoinColumn(name = "idUser", nullable = false)
     private User user;
+    private String refreshToken;
 
     @Column(nullable = false)
     private LocalDateTime expiration;

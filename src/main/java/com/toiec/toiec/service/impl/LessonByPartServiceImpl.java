@@ -31,16 +31,17 @@ public class LessonByPartServiceImpl implements LessonByPartService {
         for (Object[] o : objList) {
             Integer questionId = (Integer) o[0];
             String questionValue = (String) o[1];
+
             Question question = new Question(questionId, questionValue, new ArrayList<>(), new ArrayList<>());
             questions.add(question);
-
-            // Xử lý Answer
-            List<Answer> answerList= JsonUtils.fromJsonList((String)o[2],Answer.class);
-            question.setAnswerList(answerList);
-
-            // Xử lý Resource
-            List<Resource> resourceList= JsonUtils.fromJsonList((String)o[3],Resource.class);
-            question.setResourceList(resourceList);
+            if(o[2]!=null){
+                List<Answer> answerList= JsonUtils.fromJsonList((String)o[2],Answer.class);
+                question.setAnswerList(answerList);
+            }
+            if(o[3]!=null){
+                List<Resource> resourceList= JsonUtils.fromJsonList((String)o[3],Resource.class);
+                question.setResourceList(resourceList);
+            }
         }
         return questions;
     }

@@ -9,8 +9,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Question {
-    private Integer idQuestion;
-    private String question;
-    private List<Answer> answerList;
+public class QuestionPart {
+    private List<Question> questionList;
+    private List<Resource> resourceList;
 }

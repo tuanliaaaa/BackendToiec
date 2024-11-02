@@ -19,7 +19,18 @@ public interface QuestionRepository extends JpaRepository<Question,Integer> {
             "FROM (SELECT id_question, value FROM question WHERE type = :type LIMIT :limit) q",
             nativeQuery = true)
     List<Object[]> findQuestionsWithAnswersByType(@Param("type") String type, @Param("limit") int limit);
-
+    @Query(value = "SELECT  " +
+            "(SELECT JSON_ARRAYAGG(JSON_OBJECT('idQuestion', childQ.id_question, 'question', childQ.value, " +
+            " 'answerList', (SELECT JSON_ARRAYAGG(JSON_OBJECT('idAnswer', a.id, 'answer', a.value, 'isCorrect', CAST(a.correct AS UNSIGNED))) " +
+            "             FROM answer a WHERE a.question_id = childQ.id_question)) " +
+            " ) FROM question childQ WHERE childQ.id_parent = parentQ.id_question) AS childQuestions, " +
+            "(SELECT JSON_ARRAYAGG(JSON_OBJECT('idResource', r.id_resource, 'resourceType', r.resoure_type, 'resourceContent', r.content_resource)) " +
+            " FROM resource_question rq JOIN resource r ON r.id_resource = rq.id_resource WHERE rq.id_question = parentQ.id_question) AS resources " +
+            "FROM question parentQ " +
+            "WHERE parentQ.type = :type AND parentQ.id_parent IS NULL " +
+            "LIMIT :limit",
+            nativeQuery = true)
+    List<Object[]> findParentQuestionsWithChildQuestionsAndSharedResources(@Param("type") String type, @Param("limit") int limit);
 
 
 }

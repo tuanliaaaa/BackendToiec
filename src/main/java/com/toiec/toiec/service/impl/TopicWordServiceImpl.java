@@ -1,26 +1,25 @@
 package com.toiec.toiec.service.impl;
 
-import com.toiec.toiec.dto.request.topicwords.CreateTopicWordRequest;
-import com.toiec.toiec.dto.request.topicwords.CreateWordRequest;
 import com.toiec.toiec.dto.response.topicwords.TopicWordResponse;
 import com.toiec.toiec.dto.response.topicwords.WordResponse;
+import com.toiec.toiec.entity.Lesson;
 import com.toiec.toiec.repository.TopicRepository;
-import com.toiec.toiec.repository.TopicWordRepository;
+import com.toiec.toiec.repository.WordRepository;
 import com.toiec.toiec.service.TopicWordService;
+import com.toiec.toiec.utils.JsonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class TopicWordServiceImpl implements TopicWordService {
     private final TopicRepository topicRepository;
-
+    private final WordRepository wordRepository;
 
     @Override
     public List<TopicWordResponse> getAllTopicWords() {
@@ -47,17 +46,16 @@ public class TopicWordServiceImpl implements TopicWordService {
 //        }
 //    }
 //
-//    @Override
-//    public List<WordResponse> getWordsByTopicId(int topicId) {
-//        try {
-//            return wordRepository.findByTopicWordId(topicId)
-//                    .stream()
-//                    .map(this::toWordResponse)
-//                    .collect(Collectors.toList());
-//        } catch (Exception e) {
-//            throw new RuntimeException("Error get topic by id: " + topicId, e);
-//        }
-//    }
+    @Override
+    public List<WordResponse> getWordsByTopicId(int topicId) {
+        List<Lesson> lessonList= wordRepository.findByTopicWordId(topicId);
+        try{
+            System.out.println(lessonList.get(0).getTheory());
+            return JsonUtils.fromJsonList(lessonList.get(0).getTheory(), WordResponse.class);
+        }catch (Exception e){
+            return null;
+        }
+    }
 //
 //    @Override
 //    public WordResponse addWordToTopic(int topicId, CreateWordRequest request) {

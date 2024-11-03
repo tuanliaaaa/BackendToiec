@@ -33,11 +33,11 @@ public class TopicWordController {
 //        return ResponseEntity.status(201).body(response);
 //    }
 //
-//    @GetMapping("/{topicId}/newwords")
-//    public ResponseEntity<?> getWordsByTopicId(@PathVariable int topicId) {
-//        List<WordResponse> words = topicWordService.getWordsByTopicId(topicId);
-//        return ResponseEntity.ok(words);
-//    }
+    @GetMapping("/{topicId}/newwords")
+    public ResponseEntity<?> getWordsByTopicId(@PathVariable int topicId) {
+
+        return ResponseEntity.ok(topicWordService.getWordsByTopicId(topicId));
+    }
 //
 //    @PostMapping("/{topicId}/newwords")
 //    public ResponseEntity<WordResponse> addWordToTopic(@PathVariable int topicId, @RequestBody CreateWordRequest request) {

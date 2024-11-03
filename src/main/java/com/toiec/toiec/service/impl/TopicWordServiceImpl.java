@@ -1,38 +1,39 @@
-//package com.toiec.toiec.service.impl;
-//
-//import com.toiec.toiec.dto.request.topicwords.CreateTopicWordRequest;
-//import com.toiec.toiec.dto.request.topicwords.CreateWordRequest;
-//import com.toiec.toiec.dto.response.topicwords.TopicWordResponse;
-//import com.toiec.toiec.dto.response.topicwords.WordResponse;
-//import com.toiec.toiec.repository.TopicWordRepository;
-//import com.toiec.toiec.repository.WordRepository;
-//import com.toiec.toiec.service.TopicWordService;
-//import lombok.RequiredArgsConstructor;
-//import lombok.extern.slf4j.Slf4j;
-//import org.springframework.stereotype.Service;
-//
-//import java.util.List;
-//import java.util.stream.Collectors;
-//
-//@Service
-//@Slf4j
-//@RequiredArgsConstructor
-//public class TopicWordServiceImpl implements TopicWordService {
-//    private final TopicWordRepository topicWordRepository;
-//    private final WordRepository wordRepository;
-//
-//
-//    @Override
-//    public List<TopicWordResponse> getAllTopicWords() {
-//        try {
-//            return topicWordRepository.findAll()
-//                    .stream()
-//                    .map(this::toResponse)
-//                    .collect(Collectors.toList());
-//        } catch (Exception e) {
-//            throw new RuntimeException("Error get all topic", e);
-//        }
-//    }
+package com.toiec.toiec.service.impl;
+
+import com.toiec.toiec.dto.request.topicwords.CreateTopicWordRequest;
+import com.toiec.toiec.dto.request.topicwords.CreateWordRequest;
+import com.toiec.toiec.dto.response.topicwords.TopicWordResponse;
+import com.toiec.toiec.dto.response.topicwords.WordResponse;
+import com.toiec.toiec.repository.TopicRepository;
+import com.toiec.toiec.repository.TopicWordRepository;
+import com.toiec.toiec.service.TopicWordService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+@Slf4j
+@RequiredArgsConstructor
+public class TopicWordServiceImpl implements TopicWordService {
+    private final TopicRepository topicRepository;
+
+
+    @Override
+    public List<TopicWordResponse> getAllTopicWords() {
+       List<TopicWordResponse> topicWordLstResponse = new ArrayList<>();
+        List<Object[]> objects = topicRepository.findAllVocabularyTopics();
+        for(Object[] object: objects){
+            TopicWordResponse topicWordResponse = new TopicWordResponse();
+            topicWordResponse.setId((Integer)object[0]);
+            topicWordResponse.setName((String)object[1]);
+            topicWordLstResponse.add(topicWordResponse);
+        }
+        return topicWordLstResponse;
+    }
 //
 //    @Override
 //    public TopicWordResponse addTopicWord(CreateTopicWordRequest request) {
@@ -91,4 +92,4 @@
 //
 //        return response;
 //    }
-//}
+}

@@ -10,7 +10,7 @@ import java.util.List;
 public interface TopicWordService {
 
     List<TopicWordResponse> getAllTopicWords();
-    TopicWordResponse addTopicWord(CreateTopicWordRequest request);
-    List<WordResponse> getWordsByTopicId(int topicId);
-    WordResponse addWordToTopic(int topicId, CreateWordRequest request);
+//    TopicWordResponse addTopicWord(CreateTopicWordRequest request);
+//    List<WordResponse> getWordsByTopicId(int topicId);
+//    WordResponse addWordToTopic(int topicId, CreateWordRequest request);
 }

@@ -1,30 +1,31 @@
-//package com.toiec.toiec.controller;
-//
-//import com.toiec.toiec.dto.request.topicwords.CreateTopicWordRequest;
-//import com.toiec.toiec.dto.request.topicwords.CreateWordRequest;
-//import com.toiec.toiec.dto.response.topicwords.TopicWordResponse;
-//import com.toiec.toiec.dto.response.topicwords.WordResponse;
-//import com.toiec.toiec.service.TopicWordService;
-//import lombok.RequiredArgsConstructor;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RestController;
-//
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.web.bind.annotation.*;
-//
-//import java.util.List;
-//
-//@RestController
-//@RequestMapping("/api/v1/topicwords")
-//@RequiredArgsConstructor
-//public class TopicWordController {
-//    private final TopicWordService topicWordService;
-//
-//    @GetMapping
-//    public ResponseEntity<?> getAllTopicWords() {
-//        List<TopicWordResponse> topicWords = topicWordService.getAllTopicWords();
-//        return ResponseEntity.ok(topicWords);
-//    }
+package com.toiec.toiec.controller;
+
+import com.toiec.toiec.dto.request.topicwords.CreateTopicWordRequest;
+import com.toiec.toiec.dto.request.topicwords.CreateWordRequest;
+import com.toiec.toiec.dto.response.topicwords.TopicWordResponse;
+import com.toiec.toiec.dto.response.topicwords.WordResponse;
+import com.toiec.toiec.service.TopicWordService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/v1/topicwords")
+@RequiredArgsConstructor
+public class TopicWordController {
+
+    private final TopicWordService topicWordService;
+
+    @GetMapping
+    public ResponseEntity<?> getAllTopicWords() {
+        List<TopicWordResponse> topicWords = topicWordService.getAllTopicWords();
+        return ResponseEntity.ok(topicWords);
+    }
 //
 //    @PostMapping
 //    public ResponseEntity<?> addTopicWord(@RequestBody CreateTopicWordRequest request) {
@@ -43,4 +44,4 @@
 //        WordResponse response = topicWordService.addWordToTopic(topicId, request);
 //        return ResponseEntity.status(201).body(response);
 //    }
-//}
+}

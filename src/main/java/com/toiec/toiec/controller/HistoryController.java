@@ -32,7 +32,7 @@ public class HistoryController {
     @GetMapping("/last")
     public ResponseEntity<?> getHistoryLastOfUser(
         Principal principal,
-        @RequestHeader(value = "type", required = true) String type
+        @RequestParam(value = "type", required = true) String type
     )
     {
         ResponseGeneral<HistoryResponse> responseGeneral = ResponseGeneral.of(

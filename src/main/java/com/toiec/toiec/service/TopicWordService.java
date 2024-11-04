@@ -1,5 +1,6 @@
 package com.toiec.toiec.service;
 
+import com.toiec.toiec.dto.response.topicwords.TopicResponse;
 import com.toiec.toiec.dto.response.topicwords.TopicWordResponse;
 import com.toiec.toiec.dto.response.topicwords.WordResponse;
 
@@ -9,6 +10,6 @@ public interface TopicWordService {
 
     List<TopicWordResponse> getAllTopicWords();
 //    TopicWordResponse addTopicWord(CreateTopicWordRequest request);
-    List<WordResponse> getWordsByTopicId(int topicId);
+    TopicResponse getWordsByTopicId(int topicId);
 //    WordResponse addWordToTopic(int topicId, CreateWordRequest request);
 }

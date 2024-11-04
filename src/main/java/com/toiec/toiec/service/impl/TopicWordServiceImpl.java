@@ -1,5 +1,6 @@
 package com.toiec.toiec.service.impl;
 
+import com.toiec.toiec.dto.response.topicwords.TopicResponse;
 import com.toiec.toiec.dto.response.topicwords.TopicWordResponse;
 import com.toiec.toiec.dto.response.topicwords.WordResponse;
 import com.toiec.toiec.entity.Lesson;
@@ -47,12 +48,22 @@ public class TopicWordServiceImpl implements TopicWordService {
 //    }
 //
     @Override
-    public List<WordResponse> getWordsByTopicId(int topicId) {
+    public TopicResponse getWordsByTopicId(int topicId) {
+        TopicResponse topicResponse = new TopicResponse();
         List<Lesson> lessonList= wordRepository.findByTopicWordId(topicId);
-        try{
-            System.out.println(lessonList.get(0).getTheory());
-            return JsonUtils.fromJsonList(lessonList.get(0).getTheory(), WordResponse.class);
-        }catch (Exception e){
+        if(!lessonList.isEmpty()){
+            topicResponse.setId(lessonList.get(0).getIdLesson());
+            topicResponse.setName((lessonList.get(0).getNameLesson()));
+            List<WordResponse> wordResponseList = new ArrayList<>();
+            try{
+                wordResponseList = JsonUtils.fromJsonList(lessonList.get(0).getTheory(), WordResponse.class);
+            }catch (Exception e){
+
+            }
+            topicResponse.setWords(wordResponseList);
+            return topicResponse;
+
+        }else{
             return null;
         }
     }

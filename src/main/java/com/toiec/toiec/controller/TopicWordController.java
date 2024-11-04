@@ -19,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/topicwords")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class TopicWordController {
 
     private final TopicWordService topicWordService;

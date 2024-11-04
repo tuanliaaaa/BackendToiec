@@ -2,6 +2,7 @@ package com.toiec.toiec.controller;
 
 import com.toiec.toiec.dto.ResponseGeneral;
 import com.toiec.toiec.dto.request.auths.LoginRequest;
+import com.toiec.toiec.dto.request.history.HistoryRequest;
 import com.toiec.toiec.dto.response.auths.LoginResponse;
 import com.toiec.toiec.dto.response.history.HistoryResponse;
 import com.toiec.toiec.entity.Histories;
@@ -42,5 +43,19 @@ public class HistoryController {
         );
         return new ResponseEntity<>(responseGeneral, HttpStatus.OK);
     }
+    @PostMapping("")
+    public ResponseEntity<?> CreateHistoryOfUser(
+            Principal principal,
+            @RequestBody @Valid HistoryRequest historyRequest
+    )
+    {
+        ResponseGeneral<HistoryResponse> responseGeneral = ResponseGeneral.of(
+                200,
+                "success",
+                historyService.createHistoryOfUser(principal.getName(),historyRequest)
+        );
+        return new ResponseEntity<>(responseGeneral, HttpStatus.OK);
+    }
+
 }
 

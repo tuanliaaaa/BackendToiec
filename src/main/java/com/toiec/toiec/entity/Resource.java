@@ -1,9 +1,6 @@
 package com.toiec.toiec.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -13,5 +10,7 @@ public class Resource {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idResource;
     private String resoureType;
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String contentResource;
 }

@@ -58,7 +58,7 @@ public class HistoryServiceImpl implements HistoryService {
         for(QuestionRequest questionRequest : questionRequestList){
             HistoryDetail historyDetailNew = new HistoryDetail();
             historyDetailNew.setHistory(historyNew);
-            historyDetailNew.setAnswerSeleted(questionRequest.getQuestionList());
+            historyDetailNew.setAnswerSeleted(questionRequest.getAnswerList());
             Question questionVir = new Question();
             questionVir.setIdQuestion(questionRequest.getId());
             historyDetailNew.setQuestion(questionVir);

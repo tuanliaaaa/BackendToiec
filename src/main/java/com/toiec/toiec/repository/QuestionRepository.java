@@ -31,6 +31,17 @@ public interface QuestionRepository extends JpaRepository<Question,Integer> {
             "LIMIT :limit",
             nativeQuery = true)
     List<Object[]> findParentQuestionsWithChildQuestionsAndSharedResources(@Param("type") String type, @Param("limit") int limit);
+    @Query(value = "SELECT  " +
+            "childQ.id_question , " +
+            "a.id  " +
+            "FROM question parentQ " +
+            "LEFT JOIN question childQ ON childQ.id_parent = parentQ.id_question " +
+            "LEFT JOIN answer a ON a.question_id = childQ.id_question AND a.correct = true " +
+            "WHERE parentQ.type = :type AND parentQ.id_parent IS NULL " +
+            "LIMIT :limit", nativeQuery = true)
+    List<Object[]> findParentQuestionsWithChildQuestionsAndCorrectAnswers(@Param("type") String type, @Param("limit") int limit);
+
+
 
 
 }

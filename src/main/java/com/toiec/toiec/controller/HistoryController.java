@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 
@@ -47,11 +48,9 @@ public class HistoryController {
     public ResponseEntity<?> CreateHistoryOfUser(
             Principal principal,
             @RequestBody @Valid HistoryRequest historyRequest
-    )
-    {
-        ResponseGeneral<HistoryResponse> responseGeneral = ResponseGeneral.of(
-                200,
-                "success",
+    ) throws IOException {
+        ResponseGeneral<HistoryResponse> responseGeneral = ResponseGeneral.ofCreated(
+                "created history",
                 historyService.createHistoryOfUser(principal.getName(),historyRequest)
         );
         return new ResponseEntity<>(responseGeneral, HttpStatus.OK);

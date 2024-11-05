@@ -6,10 +6,11 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@AllArgsConstructor
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
-public class HistoryRequest {
-    private String type;
-    private List<QuestionRequest> questionList;
+public class QuestionRequest {
+    private Integer id;
+    private String questionList;
+    private Boolean isCorrect;
 }

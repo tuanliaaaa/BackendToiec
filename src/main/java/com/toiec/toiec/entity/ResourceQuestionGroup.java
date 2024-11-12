@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Entity
 @Data
-public class ResourceQuestion {
+public class ResourceQuestionGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idResourceQuestion;
@@ -13,6 +13,6 @@ public class ResourceQuestion {
     @JoinColumn(name = "idResource", nullable = false)
     private Resource resource;
     @ManyToOne
-    @JoinColumn(name = "idQuestion", nullable = false)
-    private  Question question;
+    @JoinColumn(name = "idQuestionGroup", nullable = false)
+    private  QuestionGroup questionGroup;
 }

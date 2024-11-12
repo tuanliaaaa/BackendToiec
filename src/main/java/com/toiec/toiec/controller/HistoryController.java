@@ -1,11 +1,9 @@
 package com.toiec.toiec.controller;
 
 import com.toiec.toiec.dto.ResponseGeneral;
-import com.toiec.toiec.dto.request.auths.LoginRequest;
 import com.toiec.toiec.dto.request.history.HistoryRequest;
-import com.toiec.toiec.dto.response.auths.LoginResponse;
 import com.toiec.toiec.dto.response.history.HistoryResponse;
-import com.toiec.toiec.entity.Histories;
+import com.toiec.toiec.entity.History;
 import com.toiec.toiec.service.HistoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,35 +20,36 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/history")
+@RequestMapping("/api/v1/histories")
 @Slf4j
 @RequiredArgsConstructor
 @CrossOrigin("*")
-
 public class HistoryController {
 
     private final HistoryService historyService;
 
-    @GetMapping("/last")
+    @GetMapping("")
     public ResponseEntity<?> getHistoryLastOfUser(
         Principal principal,
-        @RequestParam(value = "type", required = true) String type
+        @RequestParam(value = "type", required = true) String type,
+        @RequestParam(value = "size", required = true) Integer size,
+        @RequestParam(value = "page", required = true) Integer page
+
     )
     {
-        ResponseGeneral<HistoryResponse> responseGeneral = ResponseGeneral.of(
-                200,
-                "success",
-                historyService.getLastNHistoryByUsernameAndType(principal.getName(),type)
+        ResponseGeneral<List<HistoryResponse>> responseGeneral = ResponseGeneral.ofSuccess(
+                historyService.findHistoryOfUsernameByType(principal.getName(),type,page,size)
         );
         return new ResponseEntity<>(responseGeneral, HttpStatus.OK);
     }
+
     @PostMapping("")
     public ResponseEntity<?> CreateHistoryOfUser(
             Principal principal,
             @RequestBody @Valid HistoryRequest historyRequest
     ) throws IOException {
         ResponseGeneral<HistoryResponse> responseGeneral = ResponseGeneral.ofCreated(
-                "created history",
+                "history",
                 historyService.createHistoryOfUser(principal.getName(),historyRequest)
         );
         return new ResponseEntity<>(responseGeneral, HttpStatus.OK);

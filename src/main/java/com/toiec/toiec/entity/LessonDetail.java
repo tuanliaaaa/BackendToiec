@@ -5,25 +5,22 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.Type;
 import org.hibernate.type.SqlTypes;
 
-import java.util.List;
-
-@Entity
 @Data
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "lesson", indexes = {
-        @Index(name = "idx_lesson_type", columnList = "type")
-})
-public class Lesson {
+public class LessonDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idLesson;
+    private int idLessonDetail;
 
     private String nameLesson;
     private String type;
-    private String des;
-
+    private String content;
+    private String audio;
+    @ManyToOne
+    @JoinColumn(name = "idLesson")
+    private Lesson lesson;
 }

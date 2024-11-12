@@ -17,16 +17,14 @@ public class Question {
 
     private String value;
 
-    @ManyToOne
-    @JoinColumn(name = "idLesson")
-    private Lesson lesson;
+
     private String type;
-    private String explain;
+    private String explanation;
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     private List<Answer> answers;
 
 
     @ManyToOne
-    @JoinColumn(name = "idParent", nullable = true)
-    private Question question;
+    @JoinColumn(name = "idQuestionGroup", nullable = false)
+    private QuestionGroup questionGroup;
 }

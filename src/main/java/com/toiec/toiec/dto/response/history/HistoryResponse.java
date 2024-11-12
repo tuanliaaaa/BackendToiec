@@ -1,6 +1,6 @@
 package com.toiec.toiec.dto.response.history;
 
-import com.toiec.toiec.entity.Histories;
+import com.toiec.toiec.entity.History;
 import com.toiec.toiec.entity.Lesson;
 import com.toiec.toiec.entity.User;
 import jakarta.persistence.*;
@@ -14,22 +14,24 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class HistoryResponse {
-    private Integer idHistories;
+    private Integer idHistory;
     private Integer user;
     private Lesson lesson;
     private String type;
-    private LocalDateTime date;
+    private LocalDateTime createdAt;
+    private LocalDateTime doneAt;
     private String status;
-    private Integer correctQuestion;
-    private Integer amountQuestion;
-    public HistoryResponse(Histories histories){
-        this.idHistories = histories.getIdHistories();
-        this.user = histories.getUser().getIdUser();
-        this.lesson = histories.getLesson();
-        this.type = histories.getType();
-        this.date = histories.getDate();
-        this.status = histories.getStatus();
-        this.correctQuestion = histories.getCorrectQuestion();
-        this.amountQuestion = histories.getAmountQuestion();
+    private Float score;
+    private Integer amountQuestionGroup;
+    public HistoryResponse(History history){
+        this.idHistory = history.getIdHistory();
+        this.user = history.getUser().getIdUser();
+        this.lesson = history.getLesson();
+        this.type = history.getType();
+        this.createdAt = history.getCreatedAt();
+        this.status = history.getStatus();
+        this.amountQuestionGroup = history.getAmountQuestionGroup();
+        this.score = history.getScore();
+        this.doneAt = history.getDoneAt();
     }
 }

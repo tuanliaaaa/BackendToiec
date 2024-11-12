@@ -11,5 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 public class HistoryRequest {
     private String type;
+    private Integer amountQuestionGroup;
     private List<QuestionRequest> questionList;
 }

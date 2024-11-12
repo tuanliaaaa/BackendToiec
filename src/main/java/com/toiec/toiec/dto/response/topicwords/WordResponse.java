@@ -8,10 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class WordResponse {
-    private String word;
-    private String pronunciation;
-    private String part_of_speech;
-    private String definition;
-    private String example_sentence;
+    private Integer idDetail;
+    private String content;
+    private String type;
     private String audio;
 }

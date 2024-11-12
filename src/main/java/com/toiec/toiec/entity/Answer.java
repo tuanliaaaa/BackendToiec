@@ -1,8 +1,10 @@
 package com.toiec.toiec.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
+@Data
 public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

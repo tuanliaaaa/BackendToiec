@@ -29,7 +29,7 @@ public class AuthController {
         System.out.println(new BCryptPasswordEncoder().encode("huan"));
 
         ResponseGeneral<LoginResponse> responseGeneral=ResponseGeneral.ofCreated(
-                "success",
+                "token",
                 authService.login(loginRequest));
         return new ResponseEntity<>(responseGeneral, HttpStatus.CREATED);
     }

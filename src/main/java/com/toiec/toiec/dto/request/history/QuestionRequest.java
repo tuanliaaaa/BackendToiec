@@ -11,6 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 public class QuestionRequest {
     private Integer id;
-    private String answerList;
+    private List<Integer> answerList;
     private Boolean isCorrect;
 }

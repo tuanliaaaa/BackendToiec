@@ -1,5 +1,6 @@
 package com.toiec.toiec.service.impl;
 
+import com.toiec.toiec.dto.request.topicwords.CreateWordRequest;
 import com.toiec.toiec.dto.response.lessons.Question;
 import com.toiec.toiec.dto.response.lessons.QuestionGroupResponse;
 import com.toiec.toiec.dto.response.lessons.Resource;
@@ -14,11 +15,13 @@ import com.toiec.toiec.exception.user.UsernameNotFoundException;
 import com.toiec.toiec.repository.QuestionGroupRepository;
 import com.toiec.toiec.repository.TopicRepository;
 import com.toiec.toiec.repository.WordRepository;
+import com.toiec.toiec.service.FileStorageService;
 import com.toiec.toiec.service.TopicWordService;
 import com.toiec.toiec.utils.JsonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,6 +32,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TopicWordServiceImpl implements TopicWordService {
     private final TopicRepository topicRepository;
+    private final FileStorageService fileStorageService;
     private final WordRepository wordRepository;
     private final QuestionGroupRepository questionGroupRepository;
 
@@ -94,39 +98,15 @@ public class TopicWordServiceImpl implements TopicWordService {
         return questionPartList;
     }
 
-//
-//    @Override
-//    public WordResponse addWordToTopic(int topicId, CreateWordRequest request) {
-//        try {
-//            TopicWord topicWord = topicWordRepository.findById(topicId)
-//                    .orElseThrow(() -> new RuntimeException("Topic not found"));
-//            Word word = new Word();
-//            word.setTopicWord(topicWord);
-//            word.setWord(request.getWord());
-//            word.setMean(request.getMean());
-//            word.setType(request.getType());
-//            word = wordRepository.save(word);
-//            return toWordResponse(word);
-//        } catch (Exception e) {
-//            throw new RuntimeException("Error adding word to topic with id: " + topicId, e);
-//        }
-//    }
-//
-//    private TopicWordResponse toResponse(TopicWord topicWord) {
-//        TopicWordResponse response = new TopicWordResponse();
-//        response.setId(topicWord.getIdTopicWord());
-//        response.setName(topicWord.getNameTopicWord());
-//        return response;
-//    }
-//
-//    private WordResponse toWordResponse(Word word) {
-//        WordResponse response = new WordResponse();
-//        response.setId(word.getIdWord());
-//        response.setWord(word.getWord());
-//        response.setMean(word.getMean());
-//        response.setType(word.getType());
-//
-//        return response;
-//    }
+  public WordResponse addVocabulary(CreateWordRequest metadata, MultipartFile image, MultipartFile audio) {
+
+        String imageUrl = image != null ? fileStorageService.saveFile(image) : null;
+        String audioUrl = audio != null ? fileStorageService.saveFile(audio) : null;
+
+
+
+        // Lưu vào DB
+        return new WordResponse();
+    }
 
 }

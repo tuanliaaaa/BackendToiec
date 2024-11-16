@@ -4,8 +4,12 @@ import lombok.Data;
 
 @Data
 public class CreateWordRequest {
-    private String word;
-    private String mean;
+    private String nameLesson;
     private String type;
+    private String content;
+    private String audio;
+    private String transcription;
+    private String example;
+    private String partOfSpeech;
 
 }

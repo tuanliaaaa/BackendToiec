@@ -15,11 +15,14 @@ public class LessonDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idLessonDetail;
-
     private String nameLesson;
     private String type;
     private String content;
+    private String image;
     private String audio;
+    private String transcription;
+    private String example;
+    private String partOfSpeech;
     @ManyToOne
     @JoinColumn(name = "idLesson")
     private Lesson lesson;

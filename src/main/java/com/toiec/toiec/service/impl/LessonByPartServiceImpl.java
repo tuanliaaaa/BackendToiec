@@ -40,7 +40,7 @@ public class LessonByPartServiceImpl implements LessonByPartService {
         for (Object[] o : objList) {
             QuestionGroupResponse questionPart = new QuestionGroupResponse();
             questionPart.setId(Integer.parseInt(o[0].toString()));
-            questionPart.setName(o[1].toString());
+            if(o[1]!=null) questionPart.setName(o[1].toString());
             if(o[2]!=null){
                 List<Question> questionList= JsonUtils.fromJsonList((String)o[2],Question.class);
                 questionPart.setQuestionList(questionList);

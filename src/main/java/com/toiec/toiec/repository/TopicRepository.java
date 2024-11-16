@@ -21,6 +21,11 @@ public interface TopicRepository extends JpaRepository<Lesson,Integer> {
                            'idDetail', d.id_lesson_detail,
                            'content', d.content,
                            'audio',d.audio,
+                           'partOfSpeech',d.part_of_speech,
+                           'nameLesson',d.name_lesson,
+                           'image',d.image,
+                           'example',d.example,
+                           'transcription',d.transcription,
                            'type', d.type
                        )
                    ) AS detailLessons

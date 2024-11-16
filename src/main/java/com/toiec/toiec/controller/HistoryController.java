@@ -23,7 +23,7 @@ import java.util.List;
 @RequestMapping("/api/v1/histories")
 @Slf4j
 @RequiredArgsConstructor
-@CrossOrigin("*")
+@CrossOrigin(origins = "*")
 public class HistoryController {
 
     private final HistoryService historyService;

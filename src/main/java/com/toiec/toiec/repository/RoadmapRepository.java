@@ -8,24 +8,16 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface TopicRepository extends JpaRepository<Lesson,Integer> {
+public interface RoadmapRepository extends JpaRepository<Lesson,Integer> {
 
-    @Query(value = "SELECT id_lesson, name_lesson FROM lesson WHERE type = 'vocabulary'", nativeQuery = true)
-    List<Object[]> findAllVocabularyTopics();
     @Query(value = """
             SELECT l.id_lesson AS idLesson,
                    l.name_lesson AS name,
-                   l.des AS description,
                    JSON_ARRAYAGG(
                        JSON_OBJECT(
                            'idDetail', d.id_lesson_detail,
                            'content', d.content,
-                           'audio',d.audio,
-                           'partOfSpeech',d.part_of_speech,
                            'nameLesson',d.name_lesson,
-                           'image',d.image,
-                           'example',d.example,
-                           'transcription',d.transcription,
                            'type', d.type
                        )
                    ) AS detailLessons
@@ -34,7 +26,6 @@ public interface TopicRepository extends JpaRepository<Lesson,Integer> {
             WHERE l.id_lesson = :id
             GROUP BY l.id_lesson
             """, nativeQuery = true)
-    List<Object[]> findLessonWithDetails(@Param("id") Integer id);
+    List<Object[]> findRoadmapWithLessonDetail(@Param("id") Integer id);
 
-    Optional<Lesson> findById(Integer id);
 }

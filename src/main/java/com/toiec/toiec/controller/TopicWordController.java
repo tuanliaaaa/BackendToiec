@@ -52,15 +52,28 @@ public class TopicWordController {
     public ResponseEntity<?> getExercisesByTopicId(@PathVariable int topicId) throws IOException {
         return new ResponseEntity<>(ResponseGeneral.of(200,"success",topicWordService.getExercisesByTopicId(topicId)), HttpStatus.OK);
     }
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value="topic/{topicId}/words",consumes = MediaType.MULTIPART_FORM_DATA_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> addVocabulary(
-            @RequestPart("metadata") String metadata,
+            @PathVariable Integer topicId,
+            @RequestPart("newWord") String newWord,
+            @RequestPart(value = "image", required = true) MultipartFile image,
+            @RequestPart(value = "audio", required = true) MultipartFile audio) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        CreateWordRequest wordRequest = objectMapper.readValue(newWord, CreateWordRequest.class);
+
+        WordResponse vocabulary = topicWordService.addVocabulary(wordRequest,topicId, image, audio);
+        return ResponseEntity.ok(vocabulary);
+    }
+    @PatchMapping(value="words/{wordId}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> updateVocabulary(
+            @PathVariable Integer wordId,
+            @RequestPart(value = "newWord",required = false) String newWord,
             @RequestPart(value = "image", required = false) MultipartFile image,
             @RequestPart(value = "audio", required = false) MultipartFile audio) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
-        CreateWordRequest wordRequest = objectMapper.readValue(metadata, CreateWordRequest.class);
-
-        WordResponse vocabulary = topicWordService.addVocabulary(wordRequest, image, audio);
+        CreateWordRequest wordRequest = null;
+        if(newWord!=null)  wordRequest = objectMapper.readValue(newWord, CreateWordRequest.class);
+        WordResponse vocabulary = topicWordService.editVocabulary(wordRequest,wordId, image, audio);
         return ResponseEntity.ok(vocabulary);
     }
 }

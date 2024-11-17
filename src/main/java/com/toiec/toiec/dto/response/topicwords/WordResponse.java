@@ -17,4 +17,5 @@ public class WordResponse {
     private String nameLesson;
     private String transcription;
     private String partOfSpeech;
+
 }

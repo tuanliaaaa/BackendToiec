@@ -16,10 +16,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @RestController
-@RequestMapping("/api/videos")
+@RequestMapping("/api/media")
 public class VideoController {
 
-    @GetMapping("/stream/{filename}")
+    @GetMapping("stream/{filename}")
     @CrossOrigin("*")
     @ResponseBody
     public  ResponseEntity<StreamingResponseBody> VideoController(
@@ -29,7 +29,7 @@ public class VideoController {
         try
         {
             StreamingResponseBody responseStream;
-            String filePathString = video_id;
+            String filePathString ="media/" +video_id;
             Path filePath = Paths.get(filePathString);
             Long fileSize = Files.size(filePath);
             byte[] buffer = new byte[1024];

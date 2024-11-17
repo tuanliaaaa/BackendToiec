@@ -1,6 +1,8 @@
 package com.toiec.toiec.service.impl;
 
 import com.toiec.toiec.dto.request.history.HistoryRequest;
+import com.toiec.toiec.dto.request.history.HistoryTopicRequest;
+import com.toiec.toiec.dto.request.history.HistoryWordRequest;
 import com.toiec.toiec.dto.request.history.QuestionRequest;
 import com.toiec.toiec.dto.response.history.HistoryResponse;
 import com.toiec.toiec.entity.*;
@@ -30,6 +32,8 @@ public class HistoryServiceImpl implements HistoryService {
     private final UserAnswerRepository userAnswerRepository;
     private final UserRepository userRepository;
     private final LessonByPartService lessonByPartService;
+    private final WordRepository wordRepository;
+    private final TopicRepository topicRepository;
     private final HistoryDetailRepository historyDetailRepository;
     private final QuestionRepository questionRepository;
     private final QuestionGroupRepository questionGroupRepository;
@@ -116,5 +120,21 @@ public class HistoryServiceImpl implements HistoryService {
             answerMapID.add(answerListId.get(i));
         }
         return answerCorrectSet.equals(answerMapID)?1:0;
+    }
+    @Override
+    public HistoryResponse createWordHistoryOfUser(String username, HistoryTopicRequest historyTopicRequest){
+        User user = userRepository.findByUsername(username).orElseThrow(UsernameNotFoundException::new);
+        List<LessonDetail> lessonDetailList=wordRepository.findByTopicWordId(historyTopicRequest.getTopicId());
+        List<HistoryDetail> historyDetailList=new ArrayList<>();
+        History historyNew = new History();
+        historyNew.setCreatedAt(LocalDateTime.now());
+        historyNew.setUser(user);
+        historyNew.setDoneAt(LocalDateTime.now());
+        historyNew.setStatus("done");
+        historyNew.setType("vocabulary");
+        lessonDetailList.forEach(lessonDetail -> {
+            //lessonDetail.
+        });
+        return new HistoryResponse(historyNew);
     }
 }

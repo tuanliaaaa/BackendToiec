@@ -18,6 +18,8 @@ import com.toiec.toiec.repository.WordRepository;
 import com.toiec.toiec.service.FileStorageService;
 import com.toiec.toiec.service.TopicWordService;
 import com.toiec.toiec.utils.JsonUtils;
+import com.toiec.toiec.utils.MapperUtils;
+import com.toiec.toiec.utils.UpdateUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -97,16 +99,32 @@ public class TopicWordServiceImpl implements TopicWordService {
 
         return questionPartList;
     }
-
-  public WordResponse addVocabulary(CreateWordRequest metadata, MultipartFile image, MultipartFile audio) {
-
+    @Override
+    public WordResponse addVocabulary(CreateWordRequest wordRequest,Integer idTopic, MultipartFile image, MultipartFile audio) {
+        Lesson topic = topicRepository.findById(idTopic).orElseThrow(
+                NotFoundException::new
+        );
         String imageUrl = image != null ? fileStorageService.saveFile(image) : null;
         String audioUrl = audio != null ? fileStorageService.saveFile(audio) : null;
 
+        String domain="http://127.0.0.1:8080/api/media/stream/";
+        LessonDetail newWord = new LessonDetail(wordRequest,domain+imageUrl,domain+audioUrl);
+        newWord.setLesson(topic);
+        newWord=wordRepository.save(newWord);
+        return MapperUtils.toDTO(newWord,WordResponse.class);
+    }
+    @Override
+    public WordResponse editVocabulary(CreateWordRequest wordRequest,Integer idWord, MultipartFile image, MultipartFile audio) {
+        LessonDetail word= wordRepository.findById(idWord).orElseThrow(NotFoundException::new);
+        String imageUrl = image != null ? fileStorageService.saveFile(image) : null;
+        String audioUrl = audio != null ? fileStorageService.saveFile(audio) : null;
+        if(imageUrl==null)word.setImage(imageUrl);
+        if(audioUrl==null)word.setAudio(audioUrl);
+        String domain="http://127.0.0.1:8080/api/media/stream/";
+        if (wordRequest!=null)UpdateUtils.updateEntityFromDTO(word,wordRequest);
 
-
-        // Lưu vào DB
-        return new WordResponse();
+        word=wordRepository.save(word);
+        return MapperUtils.toDTO(word,WordResponse.class);
     }
 
 }

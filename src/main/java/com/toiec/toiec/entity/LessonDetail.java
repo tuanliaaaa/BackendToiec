@@ -1,5 +1,6 @@
 package com.toiec.toiec.entity;
 
+import com.toiec.toiec.dto.request.topicwords.CreateWordRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,6 +18,7 @@ public class LessonDetail {
     private int idLessonDetail;
     private String nameLesson;
     private String type;
+    @Lob
     private String content;
     private String image;
     private String audio;
@@ -26,4 +28,16 @@ public class LessonDetail {
     @ManyToOne
     @JoinColumn(name = "idLesson")
     private Lesson lesson;
+    public LessonDetail(CreateWordRequest createWordRequest,String image,String audio)
+    {
+        this.nameLesson = createWordRequest.getNameLesson();
+        this.example = createWordRequest.getExample();
+        this.partOfSpeech = createWordRequest.getPartOfSpeech();
+        this.transcription = createWordRequest.getTranscription();
+        this.content = createWordRequest.getContent();
+        this.type = "vocabulary";
+        this.image = image;
+        this.audio = audio;
+
+    }
 }

@@ -23,4 +23,7 @@ public class HistoryDetail {
     @ManyToOne
     @JoinColumn(name = "idQuestionGroup",nullable = true)
     private QuestionGroup questionGroup;
+    @ManyToOne
+    @JoinColumn(name = "idLessonDetail",nullable = true)
+    private LessonDetail lessonDetail;
 }

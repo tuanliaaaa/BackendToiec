@@ -2,6 +2,8 @@ package com.toiec.toiec.controller;
 
 import com.toiec.toiec.dto.ResponseGeneral;
 import com.toiec.toiec.dto.request.history.HistoryRequest;
+import com.toiec.toiec.dto.request.history.HistoryTopicRequest;
+import com.toiec.toiec.dto.request.history.HistoryWordRequest;
 import com.toiec.toiec.dto.response.history.HistoryResponse;
 import com.toiec.toiec.entity.History;
 import com.toiec.toiec.service.HistoryService;
@@ -55,5 +57,16 @@ public class HistoryController {
         return new ResponseEntity<>(responseGeneral, HttpStatus.OK);
     }
 
+    @PostMapping("words")
+    public ResponseEntity<?> CreateWordHistoryOfUser(
+            Principal principal,
+            @RequestBody @Valid HistoryTopicRequest historyRequest
+    ){
+        ResponseGeneral<HistoryResponse> responseGeneral = ResponseGeneral.ofCreated(
+                "history",
+                historyService.createWordHistoryOfUser(principal.getName(),historyRequest)
+        );
+        return new ResponseEntity<>(responseGeneral, HttpStatus.OK);
+    }
 }
 

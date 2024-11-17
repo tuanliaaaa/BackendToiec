@@ -72,6 +72,7 @@ public class HistoryServiceImpl implements HistoryService {
         List<HistoryDetail> historyDetailNewList = new ArrayList<>();
         List<UserAnswer> userAnswerNewList = new ArrayList<>();
         Integer countCorrect=0,countQuestion=0;
+        questionRequestList=questionRequestList!=null?questionRequestList : new ArrayList<>();
         if(questionRequestList.size()!=questionWithAnns.size()) throw new NumberOfQuestionsIsInsufficient();
         for(QuestionRequest questionRequest : questionRequestList){
             HistoryDetail historyDetailNew = new HistoryDetail();
@@ -112,7 +113,8 @@ public class HistoryServiceImpl implements HistoryService {
     //Kiểm tra xem answer với các trạng thái : {-1:"Lựa chọn của bạn trong cơ sở dữ liệu không tồn tại ",0:"Lựa chọn không đúng",1:"Lựa chọn của bạn là đúng"}
     private static Integer checkAnswer(Set answerSet,Set answerCorrectSet,List<Integer> answerListId)
     {
-        if(answerListId.isEmpty()) return -1;
+        if(answerListId.isEmpty()) return 0;
+        if(answerCorrectSet ==null) return 1;
         Set<Integer> answerMapID = new HashSet<>();
         for(int i=0;i<answerListId.size();i++)
         {

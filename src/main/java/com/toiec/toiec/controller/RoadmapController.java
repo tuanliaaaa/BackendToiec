@@ -18,8 +18,8 @@ import java.io.IOException;
 public class RoadmapController {
     private final RoadmapService roadmapService;
     @GetMapping("")
-    public ResponseEntity<?> findAllRoadMap() {
-        return new ResponseEntity<>(ResponseGeneral.of(200,"success",roadmapService.findAllRoadMap()), HttpStatus.OK);
+    public ResponseEntity<?> findAllRoadMap() throws IOException {
+        return new ResponseEntity<>(ResponseGeneral.ofSuccess(roadmapService.findAllRoadMap()), HttpStatus.OK);
     }
     @GetMapping("{idRoadMap}")
     public ResponseEntity<?> getRoadMap(

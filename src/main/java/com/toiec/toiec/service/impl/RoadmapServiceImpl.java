@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,10 +23,20 @@ public class RoadmapServiceImpl implements RoadmapService {
     private final RoadmapRepository roadmapRepository;
     private final GrammarRepository grammarRepository;
     @Override
-    public String findAllRoadMap()
-    {
-
-        return "D";
+    public List<RoadmapResponse> findAllRoadMap() throws IOException {
+        List<RoadmapResponse> responseListResponse = new ArrayList<>();
+        List<Object[]> objects = roadmapRepository.findAllRoadmapWithLessonDetail();
+        for(Object[] object: objects){
+            RoadmapResponse roadmapResponse = new RoadmapResponse();
+            roadmapResponse.setId((Integer) object[0]);
+            roadmapResponse.setName((String)object[1]);
+            if(object[2]!=null){
+                List<GrammarResponse> grammarResponseList= JsonUtils.fromJsonList((String)object[2], GrammarResponse.class);
+                roadmapResponse.setGrammars(grammarResponseList);
+            }
+            responseListResponse.add(roadmapResponse);
+        }
+        return responseListResponse;
     }
     @Override
     public  RoadmapResponse findLessonesByRoodmapId(Integer roadmapId) throws IOException {

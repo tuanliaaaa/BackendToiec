@@ -28,6 +28,9 @@ public class UserController {
     @GetMapping("/infor")
     public ResponseEntity<?> findInforAccountLogin(Principal principal)
     {
+        if (principal == null) {
+            return new ResponseEntity<>("ResponseEntity", HttpStatus.UNAUTHORIZED);
+        }
         String username = principal.getName();
         ResponseGeneral<?> responseGeneral= ResponseGeneral.of(200,
                 "success",userService.findInforByUsername(username));

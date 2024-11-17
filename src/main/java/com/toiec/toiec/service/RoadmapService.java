@@ -5,10 +5,11 @@ import com.toiec.toiec.dto.response.roadmap.RoadmapResponse;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public interface RoadmapService {
-    String findAllRoadMap();
+    List<RoadmapResponse> findAllRoadMap() throws IOException;
     GrammarResponse getGrammarById(Integer id);
     RoadmapResponse findLessonesByRoodmapId(Integer roodmapId) throws IOException;
 }

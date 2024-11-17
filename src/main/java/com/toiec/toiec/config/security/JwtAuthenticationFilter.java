@@ -48,15 +48,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
             filterChain.doFilter(request, response);
         }catch (InvalidTokenException e){
-            // Thiết lập mã trạng thái và tiêu đề phản hồi
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
+
+            // Cấu hình CORS
+            response.setHeader("Access-Control-Allow-Origin", "*"); // Hoặc chỉ định domain của bạn
+            response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE"); // Các phương thức HTTP
+            response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization"); // Các header cho phép
+
             LocalDateTime now = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
             String timestamp = now.format(formatter);
+
             // Tạo đối tượng JSON phản hồi với message lấy từ e.getMessage()
-            String jsonResponse = String.format("{\"status\":401,\"message\":\"UnauthorizedException\",\"error\":\"%s\",\"code\":\"%s\",\"timestamp\":\"%s\"}", e.getMessage(),e.getCode(),timestamp);
+            String jsonResponse = String.format("{\"status\":401,\"message\":\"UnauthorizedException\",\"error\":\"%s\",\"code\":\"%s\",\"timestamp\":\"%s\"}",
+                    e.getMessage(), e.getCode(), timestamp);
 
             // Ghi đối tượng JSON vào phản hồi
             response.getWriter().write(jsonResponse);

@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/api/v1/exams")
 @Slf4j
@@ -29,10 +31,11 @@ public class ExamController {
                 examService.findAllExam());
         return new ResponseEntity<>(responseGeneral, HttpStatus.OK);
     }
+
     @GetMapping("{examID}")
-    public ResponseEntity<?> getExamById(@PathVariable("examID") Integer examID){
+    public ResponseEntity<?> getExamDetailById(@PathVariable("examID") Integer examID) throws IOException {
         ResponseGeneral<?> responseGeneral=ResponseGeneral.ofSuccess(
-                examService.getExamById(examID)
+                examService.getExamDetailById(examID)
         );
         return new ResponseEntity<>(responseGeneral, HttpStatus.OK);
     }

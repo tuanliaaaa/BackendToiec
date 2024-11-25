@@ -15,9 +15,9 @@ public interface TopicWordService {
     List<TopicWordResponse> getAllTopicWords();
 //    TopicWordResponse addTopicWord(CreateTopicWordRequest request);
     TopicResponse getWordsByTopicId(int topicId) throws IOException;
-     WordResponse editVocabulary(CreateWordRequest wordRequest,Integer idWord, MultipartFile image, MultipartFile audio);
-
+    WordResponse editVocabulary(CreateWordRequest wordRequest,Integer idWord, MultipartFile image, MultipartFile audio);
+    void deleteWordById(Integer wordId);
     List<QuestionGroupResponse> getExercisesByTopicId(int topicId) throws IOException;
-     WordResponse addVocabulary(CreateWordRequest wordRequest,Integer idTopic, MultipartFile image, MultipartFile audio) ;
+    WordResponse addVocabulary(CreateWordRequest wordRequest,Integer idTopic, MultipartFile image, MultipartFile audio) ;
 
 }

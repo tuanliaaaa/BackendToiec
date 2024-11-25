@@ -12,6 +12,7 @@ import com.toiec.toiec.entity.LessonDetail;
 import com.toiec.toiec.exception.base.NotFoundException;
 import com.toiec.toiec.exception.question.QuestionNotFoundException;
 import com.toiec.toiec.exception.user.UsernameNotFoundException;
+import com.toiec.toiec.exception.word.WordNotFoundException;
 import com.toiec.toiec.repository.QuestionGroupRepository;
 import com.toiec.toiec.repository.TopicRepository;
 import com.toiec.toiec.repository.WordRepository;
@@ -25,7 +26,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +54,26 @@ public class TopicWordServiceImpl implements TopicWordService {
         }
         return topicWordLstResponse;
     }
+    @Override
+    public void deleteWordById(Integer wordId)
+    {
+        LessonDetail word = wordRepository.findById(wordId).orElseThrow(
+                WordNotFoundException::new
+        );
+        Path filePath = Paths.get("media/", word.getImage().substring(("http://127.0.0.1:8080/api/media/image/").length()-1));
+        File file = filePath.toFile();
+        if (file.exists()) {
+            boolean deleted = file.delete();
+        }
+        filePath = Paths.get("media/", word.getAudio().substring(("http://127.0.0.1:8080/api/media/stream/").length()-1));
+        file = filePath.toFile();
+        if (file.exists()) {
+            boolean deleted = file.delete();
+        }
+        wordRepository.deleteById(wordId);
+    }
+
+
 //
 //    @Override
 //    public TopicWordResponse addTopicWord(CreateTopicWordRequest request) {
@@ -70,9 +94,10 @@ public class TopicWordServiceImpl implements TopicWordService {
         if(objects.size()==0) throw new NotFoundException();
         topicResponse.setId(topicId);
         topicResponse.setName((String)objects.get(0)[1]);
+        topicResponse.setWords(new ArrayList<>());
         if(objects.get(0)[3]!=null){
             List<WordResponse> questionList= JsonUtils.fromJsonList((String)objects.get(0)[3],WordResponse.class);
-            topicResponse.setWords(questionList);
+            if(questionList.get(0).getIdDetail()!=null) topicResponse.setWords(questionList);
         }
         return topicResponse;
     }
@@ -107,8 +132,8 @@ public class TopicWordServiceImpl implements TopicWordService {
         String imageUrl = image != null ? fileStorageService.saveFile(image) : null;
         String audioUrl = audio != null ? fileStorageService.saveFile(audio) : null;
 
-        String domain="http://127.0.0.1:8080/api/media/stream/";
-        LessonDetail newWord = new LessonDetail(wordRequest,domain+imageUrl,domain+audioUrl);
+        String domain="http://127.0.0.1:8080/api/media";
+        LessonDetail newWord = new LessonDetail(wordRequest,domain+"/image/"+imageUrl,domain+"/stream/"+audioUrl);
         newWord.setLesson(topic);
         newWord=wordRepository.save(newWord);
         return MapperUtils.toDTO(newWord,WordResponse.class);

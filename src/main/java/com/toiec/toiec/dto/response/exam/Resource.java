@@ -4,13 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ExamDetailResponse {
-    private Integer idExam;
-    private String examName;
-    private List<PartResponse> partResponseList;
+public class Resource {
+    private  Integer idResource;
+    private  String resourceContent;
+    private  String resourceType;
 }

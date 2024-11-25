@@ -10,13 +10,10 @@ public class ChatRequest {
 
     private String model;
     private List<Message> messages;
-    private int n;
-    private double temperature;
 
-    public ChatRequest(String model, String prompt) {
+
+    public ChatRequest(String model, List<Message> messages) {
         this.model = model;
-        this.messages = new ArrayList<>();
-        this.n = 1;
-        this.messages.add(new Message("user", prompt));
+        this.messages = messages;
     }
 }

@@ -43,6 +43,15 @@ public class TopicWordController {
 //        return ResponseEntity.status(201).body(response);
 //    }
 //
+    @DeleteMapping("words/{wordId}")
+    public ResponseEntity<?> deleteWord(@PathVariable Integer wordId) {
+        topicWordService.deleteWordById(wordId);
+        return new ResponseEntity<>(
+                ResponseGeneral.ofDelete("word"),
+                HttpStatus.OK);
+
+    }
+
     @GetMapping("topic/{topicId}/newwords")
     public ResponseEntity<?> getWordsByTopicId(@PathVariable int topicId) throws IOException {
         return new ResponseEntity<>(ResponseGeneral.of(200,"success",topicWordService.getWordsByTopicId(topicId)), HttpStatus.OK);

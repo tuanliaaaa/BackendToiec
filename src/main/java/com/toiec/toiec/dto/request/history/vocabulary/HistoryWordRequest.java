@@ -1,4 +1,4 @@
-package com.toiec.toiec.dto.request.history;
+package com.toiec.toiec.dto.request.history.vocabulary;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

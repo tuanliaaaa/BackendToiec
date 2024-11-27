@@ -14,6 +14,8 @@ public class HistoryDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idHistoryDetail;
     private Boolean isCorrect;
+    private String type;
+    private Integer Score;
     @ManyToOne
     @JoinColumn(name = "idHistory")
     private History history;

@@ -36,6 +36,7 @@ public class TopicWordController {
         return new ResponseEntity<>(ResponseGeneral.ofSuccess(topicWords), HttpStatus.OK);
 
     }
+
 //
 //    @PostMapping
 //    public ResponseEntity<?> addTopicWord(@RequestBody CreateTopicWordRequest request) {
@@ -82,7 +83,7 @@ public class TopicWordController {
         ObjectMapper objectMapper = new ObjectMapper();
         CreateWordRequest wordRequest = null;
         if(newWord!=null)  wordRequest = objectMapper.readValue(newWord, CreateWordRequest.class);
-        WordResponse vocabulary = topicWordService.editVocabulary(wordRequest,wordId, image, audio);
+         WordResponse vocabulary = topicWordService.editVocabulary(wordRequest,wordId, image, audio);
         return ResponseEntity.ok(vocabulary);
     }
 }

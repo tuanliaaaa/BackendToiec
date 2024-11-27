@@ -1,10 +1,15 @@
 package com.toiec.toiec.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.sql.Timestamp;
 import com.toiec.toiec.dto.request.history.HistoryRequest;
-import com.toiec.toiec.dto.request.history.HistoryTopicRequest;
-import com.toiec.toiec.dto.request.history.HistoryWordRequest;
+import com.toiec.toiec.dto.request.history.vocabulary.HistoryTopicRequest;
 import com.toiec.toiec.dto.request.history.QuestionRequest;
+import com.toiec.toiec.dto.request.history.vocabulary.HistoryWordRequest;
 import com.toiec.toiec.dto.response.history.HistoryResponse;
+import com.toiec.toiec.dto.response.history.vocabulary.HistoryVocabularyResponse;
+import com.toiec.toiec.dto.response.topicwords.WordResponse;
 import com.toiec.toiec.entity.*;
 import com.toiec.toiec.exception.answer.AnswerNotFoundException;
 import com.toiec.toiec.exception.question.NumberOfQuestionsIsInsufficient;
@@ -13,6 +18,7 @@ import com.toiec.toiec.exception.user.UsernameNotFoundException;
 import com.toiec.toiec.repository.*;
 import com.toiec.toiec.service.HistoryService;
 import com.toiec.toiec.service.LessonByPartService;
+import com.toiec.toiec.utils.JsonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +29,8 @@ import org.springframework.data.domain.Pageable;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +45,34 @@ public class HistoryServiceImpl implements HistoryService {
     private final HistoryDetailRepository historyDetailRepository;
     private final QuestionRepository questionRepository;
     private final QuestionGroupRepository questionGroupRepository;
+    @Override
+    public List<HistoryVocabularyResponse> findHistoryWordOfUsernameByType(String username, Integer page, Integer size) {
+        List<Object[]> historiesList = historyRepository.findHistoriesWithDetailsByUsername(username,(page+1)*size,page*size);
+        return historiesList.stream().map(result -> {
+            HistoryVocabularyResponse dto = new HistoryVocabularyResponse();
+            dto.setIdHistory((Integer) result[0]);
+            dto.setType((String) result[1]);
+            dto.setAmountQuestionGroup((Integer) result[2]);
+            dto.setStatus((String) result[3]);
+            Timestamp createdAtTimestamp = (Timestamp) result[4];
+            dto.setCreatedAt(createdAtTimestamp != null ? createdAtTimestamp.toLocalDateTime() : null);
+
+            Timestamp doneAtTimestamp = (Timestamp) result[5];
+            dto.setDoneAt(doneAtTimestamp != null ? doneAtTimestamp.toLocalDateTime() : null);
+
+            dto.setScore((Float) result[6]);
+            dto.setUsername((String) result[7]);
+            List<HistoryVocabularyResponse.HistoryDetailRequest> historyDetails = new ArrayList<>();
+            try {
+                historyDetails= JsonUtils.fromJsonList( (String) result[8],HistoryVocabularyResponse.HistoryDetailRequest.class);
+            } catch (IOException e) {
+
+            }
+            dto.setHistoryDetails(historyDetails);
+            return dto;
+        }).collect(Collectors.toList());
+    }
+
     @Override
     public List<HistoryResponse> findHistoryOfUsernameByType(String username, String type,Integer page,Integer size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -124,19 +160,32 @@ public class HistoryServiceImpl implements HistoryService {
         return answerCorrectSet.equals(answerMapID)?1:0;
     }
     @Override
-    public HistoryResponse createWordHistoryOfUser(String username, HistoryTopicRequest historyTopicRequest){
-        User user = userRepository.findByUsername(username).orElseThrow(UsernameNotFoundException::new);
-        List<LessonDetail> lessonDetailList=wordRepository.findByTopicWordId(historyTopicRequest.getTopicId());
-        List<HistoryDetail> historyDetailList=new ArrayList<>();
+    public HistoryResponse createWordHistoryOfUser(String username, HistoryTopicRequest historyTopicRequest) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException());
+        List<LessonDetail> lessonDetailList = wordRepository.findByTopicWordId(historyTopicRequest.getTopicId());
+        Map<Integer, LessonDetail> lessonDetailMap = lessonDetailList.stream()
+                .collect(Collectors.toMap(LessonDetail::getIdLessonDetail, Function.identity()));
         History historyNew = new History();
         historyNew.setCreatedAt(LocalDateTime.now());
         historyNew.setUser(user);
         historyNew.setDoneAt(LocalDateTime.now());
         historyNew.setStatus("done");
         historyNew.setType("vocabulary");
-        lessonDetailList.forEach(lessonDetail -> {
-            //lessonDetail.
-        });
+        List<HistoryDetail> historyDetailList = new ArrayList<>();
+        for (HistoryWordRequest word : historyTopicRequest.getWords()) {
+            if (lessonDetailMap.containsKey(word.getId())) {
+                HistoryDetail historyDetailNew = new HistoryDetail();
+                historyDetailNew.setHistory(historyNew);
+                historyDetailNew.setType("vocabulary");
+                historyDetailNew.setScore(Math.min(word.getScore(), 2));
+                historyDetailNew.setLessonDetail(lessonDetailMap.get(word.getId()));
+                historyDetailList.add(historyDetailNew);
+            }
+        }
+        historyNew = historyRepository.save(historyNew);
+        historyDetailRepository.saveAll(historyDetailList);
         return new HistoryResponse(historyNew);
     }
+
 }

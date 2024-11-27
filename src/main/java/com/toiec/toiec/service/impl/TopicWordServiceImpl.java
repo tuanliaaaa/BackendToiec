@@ -143,9 +143,9 @@ public class TopicWordServiceImpl implements TopicWordService {
         LessonDetail word= wordRepository.findById(idWord).orElseThrow(NotFoundException::new);
         String imageUrl = image != null ? fileStorageService.saveFile(image) : null;
         String audioUrl = audio != null ? fileStorageService.saveFile(audio) : null;
-        if(imageUrl==null)word.setImage(imageUrl);
-        if(audioUrl==null)word.setAudio(audioUrl);
-        String domain="http://127.0.0.1:8080/api/media/stream/";
+        String domain="http://127.0.0.1:8080/api/media";
+        if(imageUrl!=null)word.setImage(domain+"/image/"+imageUrl);
+        if(audioUrl!=null)word.setAudio(domain+"/stream/"+audioUrl);
         if (wordRequest!=null)UpdateUtils.updateEntityFromDTO(word,wordRequest);
 
         word=wordRepository.save(word);

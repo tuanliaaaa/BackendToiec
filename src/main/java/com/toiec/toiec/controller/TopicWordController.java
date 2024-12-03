@@ -3,12 +3,12 @@ package com.toiec.toiec.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toiec.toiec.dto.ResponseGeneral;
-import com.toiec.toiec.dto.request.topicwords.CreateTopicWordRequest;
-import com.toiec.toiec.dto.request.topicwords.CreateWordRequest;
-import com.toiec.toiec.dto.response.topicwords.TopicWordResponse;
-import com.toiec.toiec.dto.response.topicwords.WordResponse;
+import com.toiec.toiec.dto.request.vocabulary.CreateTopicRequest;
+import com.toiec.toiec.dto.request.vocabulary.CreateWordRequest;
+import com.toiec.toiec.dto.request.vocabulary.TopicUpdatReuqest;
+import com.toiec.toiec.dto.response.vocabulary.TopicWordResponse;
+import com.toiec.toiec.dto.response.vocabulary.WordResponse;
 import com.toiec.toiec.service.TopicWordService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -36,14 +36,24 @@ public class TopicWordController {
         return new ResponseEntity<>(ResponseGeneral.ofSuccess(topicWords), HttpStatus.OK);
 
     }
+    @PatchMapping("topic/{topicId}")
+    public ResponseEntity<?> updateTopicWord(
+            @PathVariable("topicId") Integer topicId,
+            @RequestBody TopicUpdatReuqest topicUpdatReuqest
+    ) {
 
-//
-//    @PostMapping
-//    public ResponseEntity<?> addTopicWord(@RequestBody CreateTopicWordRequest request) {
-//        TopicWordResponse response = topicWordService.addTopicWord(request);
-//        return ResponseEntity.status(201).body(response);
-//    }
-//
+        TopicWordResponse topic = topicWordService.editTopic(topicUpdatReuqest,topicId);
+        return new ResponseEntity<>(ResponseGeneral.ofSuccess(topic), HttpStatus.OK);
+    }
+
+
+
+    @PostMapping("topic")
+    public ResponseEntity<?> addTopic(@RequestBody CreateTopicRequest request) {
+        TopicWordResponse response = topicWordService.addTopic(request);
+        return new ResponseEntity<>(ResponseGeneral.ofCreated("topic",response),HttpStatus.CREATED);
+    }
+
     @DeleteMapping("words/{wordId}")
     public ResponseEntity<?> deleteWord(@PathVariable Integer wordId) {
         topicWordService.deleteWordById(wordId);

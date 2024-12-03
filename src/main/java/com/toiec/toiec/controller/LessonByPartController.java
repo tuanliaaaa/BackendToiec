@@ -1,17 +1,12 @@
 package com.toiec.toiec.controller;
 
 import com.toiec.toiec.dto.ResponseGeneral;
-import com.toiec.toiec.dto.request.auths.LoginRequest;
-import com.toiec.toiec.dto.response.auths.LoginResponse;
-import com.toiec.toiec.service.AuthService;
 import com.toiec.toiec.service.LessonByPartService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.config.annotation.web.headers.HeadersSecurityMarker;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;

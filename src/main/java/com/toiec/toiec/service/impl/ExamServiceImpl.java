@@ -1,9 +1,9 @@
 package com.toiec.toiec.service.impl;
 
+import com.toiec.toiec.dto.request.exam.CreateExam;
 import com.toiec.toiec.dto.response.exam.ExamDetailResponse;
 import com.toiec.toiec.dto.response.exam.ExamResponse;
 import com.toiec.toiec.dto.response.exam.PartResponse;
-import com.toiec.toiec.dto.response.lessons.Question;
 import com.toiec.toiec.entity.Exam;
 import com.toiec.toiec.repository.ExamRepository;
 import com.toiec.toiec.service.ExamService;
@@ -28,6 +28,15 @@ public class ExamServiceImpl implements ExamService {
         List<ExamResponse> examsResponse = MapperUtils.toDTOs(examRepository.findAll(),ExamResponse.class);
 
         return examsResponse;
+    }
+    @Override
+    public ExamResponse createExam(CreateExam createExam)
+    {
+        Exam exam = new Exam();
+        exam.setExamName(createExam.getExamName());
+        exam.setStatus("0");
+        exam=examRepository.save(exam);
+        return MapperUtils.toDTO(exam,ExamResponse.class);
     }
     @Override
     public ExamDetailResponse getExamDetailById(Integer examId) throws IOException {

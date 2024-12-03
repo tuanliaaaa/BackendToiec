@@ -27,7 +27,9 @@ public class ResponseGeneral<T> {
     public static <T> ResponseGeneral<T> ofCreated(String message, T data) {
         return of( HttpStatus.CREATED.value(), message+" created", data, DateUtils.getCurrentDateString());
     }
-
+    public static <T> ResponseGeneral<T> ofUpdated(String message, T data) {
+        return of( HttpStatus.OK.value(), message+" updated", data, DateUtils.getCurrentDateString());
+    }
     public static <T> ResponseGeneral<T> ofSuccess(T data) {
         return  of(HttpStatus.OK.value(), "success", data, DateUtils.getCurrentDateString());
     }

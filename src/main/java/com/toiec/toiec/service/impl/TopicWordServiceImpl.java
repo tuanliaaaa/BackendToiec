@@ -1,17 +1,17 @@
 package com.toiec.toiec.service.impl;
 
-import com.toiec.toiec.dto.request.topicwords.CreateWordRequest;
-import com.toiec.toiec.dto.response.lessons.Question;
-import com.toiec.toiec.dto.response.lessons.QuestionGroupResponse;
-import com.toiec.toiec.dto.response.lessons.Resource;
-import com.toiec.toiec.dto.response.topicwords.TopicResponse;
-import com.toiec.toiec.dto.response.topicwords.TopicWordResponse;
-import com.toiec.toiec.dto.response.topicwords.WordResponse;
+import com.toiec.toiec.dto.request.vocabulary.CreateTopicRequest;
+import com.toiec.toiec.dto.request.vocabulary.CreateWordRequest;
+import com.toiec.toiec.dto.request.vocabulary.TopicUpdatReuqest;
+import com.toiec.toiec.dto.response.lesson.Question;
+import com.toiec.toiec.dto.response.lesson.QuestionGroupResponse;
+import com.toiec.toiec.dto.response.lesson.Resource;
+import com.toiec.toiec.dto.response.vocabulary.TopicResponse;
+import com.toiec.toiec.dto.response.vocabulary.TopicWordResponse;
+import com.toiec.toiec.dto.response.vocabulary.WordResponse;
 import com.toiec.toiec.entity.Lesson;
 import com.toiec.toiec.entity.LessonDetail;
 import com.toiec.toiec.exception.base.NotFoundException;
-import com.toiec.toiec.exception.question.QuestionNotFoundException;
-import com.toiec.toiec.exception.user.UsernameNotFoundException;
 import com.toiec.toiec.exception.word.WordNotFoundException;
 import com.toiec.toiec.repository.QuestionGroupRepository;
 import com.toiec.toiec.repository.TopicRepository;
@@ -43,7 +43,19 @@ public class TopicWordServiceImpl implements TopicWordService {
     private final QuestionGroupRepository questionGroupRepository;
 
     @Override
-    public List<TopicWordResponse> getAllTopicWords() {
+    public  TopicWordResponse editTopic(TopicUpdatReuqest topicUpdatReuqest, Integer topicId)
+    {
+        Lesson topic = topicRepository.findById(topicId).orElseThrow(
+                NotFoundException::new
+        );
+        UpdateUtils.updateEntityFromDTO(topic, topicUpdatReuqest);
+        topic=topicRepository.save(topic);
+        return new TopicWordResponse(topic);
+    }
+
+    @Override
+    public List<TopicWordResponse> getAllTopicWords()
+    {
        List<TopicWordResponse> topicWordLstResponse = new ArrayList<>();
         List<Object[]> objects = topicRepository.findAllVocabularyTopics();
         for(Object[] object: objects){
@@ -72,21 +84,15 @@ public class TopicWordServiceImpl implements TopicWordService {
         }
         wordRepository.deleteById(wordId);
     }
+    @Override
+    public TopicWordResponse addTopic(CreateTopicRequest request) {
+        Lesson topicWord = new Lesson();
+        topicWord.setNameLesson(request.getNameLesson());
+        topicWord.setType("vocabulary");
+        topicWord = topicRepository.save(topicWord);
+        return new TopicWordResponse(topicWord);
+    }
 
-
-//
-//    @Override
-//    public TopicWordResponse addTopicWord(CreateTopicWordRequest request) {
-//        try {
-//            TopicWord topicWord = new TopicWord();
-//            topicWord.setNameTopicWord(request.getName());
-//            topicWord = topicWordRepository.save(topicWord);
-//            return toResponse(topicWord);
-//        } catch (Exception e) {
-//            throw new RuntimeException("Error creating new topic word", e);
-//        }
-//    }
-//
     @Override
     public TopicResponse getWordsByTopicId(int topicId) throws IOException {
         TopicResponse topicResponse = new TopicResponse();

@@ -1,7 +1,5 @@
 package com.toiec.toiec.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.sql.Timestamp;
 import com.toiec.toiec.dto.request.history.HistoryRequest;
 import com.toiec.toiec.dto.request.history.vocabulary.HistoryTopicRequest;
@@ -9,7 +7,6 @@ import com.toiec.toiec.dto.request.history.QuestionRequest;
 import com.toiec.toiec.dto.request.history.vocabulary.HistoryWordRequest;
 import com.toiec.toiec.dto.response.history.HistoryResponse;
 import com.toiec.toiec.dto.response.history.vocabulary.HistoryVocabularyResponse;
-import com.toiec.toiec.dto.response.topicwords.WordResponse;
 import com.toiec.toiec.entity.*;
 import com.toiec.toiec.exception.answer.AnswerNotFoundException;
 import com.toiec.toiec.exception.question.NumberOfQuestionsIsInsufficient;

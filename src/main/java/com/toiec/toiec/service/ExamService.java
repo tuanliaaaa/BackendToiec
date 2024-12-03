@@ -1,5 +1,6 @@
 package com.toiec.toiec.service;
 
+import com.toiec.toiec.dto.request.exam.CreateExam;
 import com.toiec.toiec.dto.response.exam.ExamDetailResponse;
 import com.toiec.toiec.dto.response.exam.ExamResponse;
 import org.springframework.stereotype.Service;
@@ -11,5 +12,5 @@ import java.util.List;
 public interface ExamService {
     List<ExamResponse> findAllExam();
     ExamDetailResponse getExamDetailById(Integer id) throws IOException;
-
+    ExamResponse createExam(CreateExam createExam) ;
 }

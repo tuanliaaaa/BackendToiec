@@ -1,4 +1,4 @@
-package com.toiec.toiec.dto.response.topicwords;
+package com.toiec.toiec.dto.response.vocabulary;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,16 +1,13 @@
 package com.toiec.toiec.controller;
 
 import com.toiec.toiec.dto.ResponseGeneral;
-import com.toiec.toiec.dto.request.auths.LoginRequest;
-import com.toiec.toiec.dto.response.auths.LoginResponse;
-import com.toiec.toiec.service.AuthService;
+import com.toiec.toiec.dto.request.exam.CreateExam;
+import com.toiec.toiec.entity.Exam;
 import com.toiec.toiec.service.ExamService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -30,6 +27,16 @@ public class ExamController {
         ResponseGeneral<?> responseGeneral=ResponseGeneral.ofSuccess(
                 examService.findAllExam());
         return new ResponseEntity<>(responseGeneral, HttpStatus.OK);
+    }
+
+    @PostMapping("")
+    public ResponseEntity<?> createExam(@RequestBody CreateExam createExam)
+    {
+
+        ResponseGeneral<?> responseGeneral=ResponseGeneral.ofCreated(
+                "exam",
+                examService.createExam(createExam));
+        return new ResponseEntity<>(responseGeneral, HttpStatus.CREATED);
     }
 
     @GetMapping("{examID}")

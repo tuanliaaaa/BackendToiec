@@ -1,10 +1,9 @@
 package com.toiec.toiec.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.toiec.toiec.dto.response.lessons.Answer;
-import com.toiec.toiec.dto.response.lessons.Question;
-import com.toiec.toiec.dto.response.lessons.QuestionGroupResponse;
-import com.toiec.toiec.dto.response.lessons.Resource;
+import com.toiec.toiec.dto.response.lesson.Question;
+import com.toiec.toiec.dto.response.lesson.QuestionGroupResponse;
+import com.toiec.toiec.dto.response.lesson.Resource;
 import com.toiec.toiec.exception.type.TypeNotFoundException;
 import com.toiec.toiec.repository.QuestionGroupRepository;
 import com.toiec.toiec.repository.QuestionRepository;

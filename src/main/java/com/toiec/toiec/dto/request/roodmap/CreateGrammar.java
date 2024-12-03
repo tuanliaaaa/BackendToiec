@@ -1,4 +1,4 @@
-package com.toiec.toiec.dto.response;
+package com.toiec.toiec.dto.request.roodmap;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class resources {
-    private Integer id;
-
+public class CreateGrammar {
+    private String nameLesson;
 }

@@ -1,7 +1,6 @@
 package com.toiec.toiec.service;
 
-import com.toiec.toiec.dto.response.lessons.Question;
-import com.toiec.toiec.dto.response.lessons.QuestionGroupResponse;
+import com.toiec.toiec.dto.response.lesson.QuestionGroupResponse;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;

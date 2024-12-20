@@ -12,5 +12,6 @@ import java.util.List;
 public class Question {
     private Integer idQuestion;
     private String question;
+    private String explanation;
     private List<Answer> answerList;
 }

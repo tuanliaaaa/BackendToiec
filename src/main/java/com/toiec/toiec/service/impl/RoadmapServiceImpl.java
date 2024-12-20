@@ -34,13 +34,27 @@ public class RoadmapServiceImpl implements RoadmapService {
     private final GrammarRepository grammarRepository;
 
     @Override
-    public DayResponse createdDay(CreateDay createDay)
+    public RoadmapResponse createdDay(CreateDay createDay)
     {
         Lesson dayLesson = new Lesson();
         dayLesson.setNameLesson(createDay.getNameDay());
+        List<LessonDetail> lessonDetailSave = new ArrayList<>();
+        for(Integer lessonDetailId: createDay.getLsIdLearningpath()){
+            LessonDetail lessonDetail = grammarRepository.findById(lessonDetailId)
+                    .orElseThrow(() -> new NotFoundException());
+            lessonDetail.setIdLessonDetail(lessonDetailId);
+            lessonDetail.setLesson(dayLesson);
+            lessonDetailSave.add(lessonDetail);
+        }
         dayLesson.setType("roadmap");
-        roadmapRepository.save(dayLesson);
-        return new DayResponse(dayLesson);
+        dayLesson=roadmapRepository.save(dayLesson);
+        RoadmapResponse roadmapResponse = new RoadmapResponse();
+        roadmapResponse.setId(dayLesson.getIdLesson());
+        roadmapResponse.setName(dayLesson.getNameLesson());
+        lessonDetailSave=grammarRepository.saveAll(lessonDetailSave);
+        List<GrammarResponse> grammarResponseList = MapperUtils.toDTOs(lessonDetailSave,GrammarResponse.class);
+        roadmapResponse.setGrammars(grammarResponseList);
+        return roadmapResponse;
     }
     @Override
     public DayResponse updateDay(UpdateDay updateDay, Integer dayId)

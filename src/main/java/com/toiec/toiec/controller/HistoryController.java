@@ -82,5 +82,21 @@ public class HistoryController {
         );
         return new ResponseEntity<>(responseGeneral, HttpStatus.OK);
     }
+
+    @GetMapping("learningpaths")
+    public ResponseEntity<?> getHistoryLearningPathOfUser(
+            Principal principal,
+            @RequestParam(value = "size", required = true) Integer size,
+            @RequestParam(value = "page", required = true) Integer page
+
+    )
+    {
+        ResponseGeneral<List<HistoryVocabularyResponse>> responseGeneral = ResponseGeneral.ofSuccess(
+                historyService.findHistoryWordOfUsernameByType(principal.getName(),page,size)
+        );
+        return new ResponseEntity<>(responseGeneral, HttpStatus.OK);
+    }
+
+
 }
 

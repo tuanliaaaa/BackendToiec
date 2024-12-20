@@ -2,7 +2,7 @@ package com.toiec.toiec.controller;
 
 import com.toiec.toiec.dto.ResponseGeneral;
 import com.toiec.toiec.dto.request.exam.CreateExam;
-import com.toiec.toiec.entity.Exam;
+import com.toiec.toiec.dto.request.exam.QuestionGroupRequest;
 import com.toiec.toiec.service.ExamService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,4 +46,34 @@ public class ExamController {
         );
         return new ResponseEntity<>(responseGeneral, HttpStatus.OK);
     }
+
+
+    @GetMapping("{examID}/part/{partID}")
+    public ResponseEntity<?> getPartOfExamDetailById(
+            @PathVariable("examID") Integer examID,
+            @PathVariable("partID")  Integer partID
+            ) throws IOException {
+        ResponseGeneral<?> responseGeneral=ResponseGeneral.ofSuccess(
+                examService.getPartOfExamDetailById(examID,"part"+String.valueOf(partID))
+        );
+        return new ResponseEntity<>(responseGeneral, HttpStatus.OK);
+    }
+
+
+
+    @GetMapping("{examID}/question/{questionGroupId}")
+    public ResponseEntity<?> addQuestionForExam (
+            @PathVariable("examId") Integer examId,
+            @PathVariable("questionGroupId") Integer questionGroupId,
+            @RequestBody QuestionGroupRequest questionGroupRequest
+    ){
+        ResponseGeneral<?> responseGeneral=ResponseGeneral.ofSuccess(
+                examService.addQuestionGroupForExam(examId,questionGroupId,questionGroupRequest)
+        );
+        return new ResponseEntity<>(responseGeneral, HttpStatus.OK);
+    }
+
+
+
+
 }

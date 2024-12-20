@@ -18,7 +18,7 @@ import java.util.List;
 public interface RoadmapService {
     List<GrammarResponse> findAllLessonDetail(Pageable pageable) throws IOException;
     DayResponse updateDay(UpdateDay updateDay,Integer dayId);
-    DayResponse createdDay(CreateDay createDay);
+    RoadmapResponse createdDay(CreateDay createDay);
     void deleteDay(Integer dayId);
     List<RoadmapResponse> findAllRoadMap() throws IOException;
     GrammarResponse getGrammarById(Integer id);

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface HistoryRepository extends JpaRepository<History,Integer> {
-    List<History> findByUser_UsernameAndTypeOrderByDoneAt(String username, String type, Pageable pageable);
+    List<History> findByUser_UsernameAndTypeOrderByDoneAtDesc(String username, String type, Pageable pageable);
     @Query(value = "SELECT h.id_history, h.type, h.amount_question_group, " +
             "h.status, h.created_at, h.done_at, h.score, u.username, " +
             "JSON_ARRAYAGG(JSON_OBJECT(" +
@@ -28,5 +28,29 @@ public interface HistoryRepository extends JpaRepository<History,Integer> {
             "LIMIT :limit OFFSET :offset",
             nativeQuery = true)
     List<Object[]> findHistoriesWithDetailsByUsername(@Param("username") String username, @Param("limit") int limit, @Param("offset") int offset);
+
+
+    @Query(value = """
+        SELECT 
+            l.id_Lesson,
+            l.name_lesson AS lessonname,
+            ROUND(AVG(h.score), 2) AS point,
+            JSON_ARRAYAGG(
+                JSON_OBJECT(
+                    'idLessonDetail', ld.id_Lesson_Detail,
+                    'nameLessonDetail', ld.name_lesson,
+                    'score', IFNULL(h.score, NULL)
+                )
+            ) AS lessonDetails
+        FROM 
+            Lesson l
+        LEFT JOIN 
+            lesson_detail ld ON l.id_Lesson = ld.id_Lesson
+        LEFT JOIN 
+            History h ON ld.id_Lesson_Detail = h.id_Lesson_Detail
+        GROUP BY 
+            l.id_Lesson, l.name_lesson
+        """, nativeQuery = true)
+    List<Object[]> getLessonsWithDetails();
 
 }

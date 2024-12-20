@@ -73,7 +73,7 @@ public class HistoryServiceImpl implements HistoryService {
     @Override
     public List<HistoryResponse> findHistoryOfUsernameByType(String username, String type,Integer page,Integer size) {
         Pageable pageable = PageRequest.of(page, size);
-        List<History> historiesList = historyRepository.findByUser_UsernameAndTypeOrderByDoneAt(username,type,pageable);
+        List<History> historiesList = historyRepository.findByUser_UsernameAndTypeOrderByDoneAtDesc(username,type,pageable);
         List<HistoryResponse> historyResponseList = new ArrayList<>();
         for(History history : historiesList){
             historyResponseList.add(new HistoryResponse(history));

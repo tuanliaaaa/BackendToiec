@@ -74,6 +74,7 @@ public interface ExamRepository extends JpaRepository<Exam,Integer> {
                         JSON_OBJECT(
                                 'id', qg.id_question_group,
                                 'name', qg.header_question_group,
+                                'orderOfQuestionGroup',qge.order_of_question_group,
                                 'questionList', (
                                     SELECT JSON_ARRAYAGG(
                                         JSON_OBJECT(
@@ -87,7 +88,8 @@ public interface ExamRepository extends JpaRepository<Exam,Integer> {
                                                             JSON_ARRAYAGG(
                                                                 JSON_OBJECT(
                                                                     'idAnswer', a.id,
-                                                                    'answer', a.value
+                                                                    'answer', a.value,
+                                                                'isCorrect', CASE WHEN a.correct = '1' THEN TRUE ELSE FALSE END
                                                                 )
                                                         )
                                                     END 

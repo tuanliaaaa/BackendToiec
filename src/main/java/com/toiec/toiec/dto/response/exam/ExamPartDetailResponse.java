@@ -20,6 +20,7 @@ public class ExamPartDetailResponse {
     public static class QuestionGroupResponse {
         private Integer id;
         private String name;
+        private  Integer orderOfQuestionGroup;
         private List<Question> questionList;
         private List<Resource> resourceList;
     }

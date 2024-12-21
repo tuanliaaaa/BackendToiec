@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class Answer {
     private Integer idAnswer;
     private String answer;
+    private Boolean isCorrect;
 }

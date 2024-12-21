@@ -16,7 +16,7 @@ public class History {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idHistory;
     @ManyToOne
-    @JoinColumn(name = "idUser", nullable = false)
+    @JoinColumn(name = "idUser", nullable = true)
     private User user;
     @ManyToOne
     @JoinColumn(name = "idExam", nullable = true)
@@ -24,6 +24,10 @@ public class History {
     @ManyToOne
     @JoinColumn(name = "idLesson", nullable = true)
     private Lesson lesson;
+
+    @ManyToOne
+    @JoinColumn(name = "idLessonDetail", nullable = true)
+    private LessonDetail lessonDetail;
     private String type;
     private Integer amountQuestionGroup;
     private String status;

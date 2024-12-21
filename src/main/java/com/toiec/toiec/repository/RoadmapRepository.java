@@ -44,5 +44,4 @@ public interface RoadmapRepository extends JpaRepository<Lesson,Integer> {
             GROUP BY l.id_lesson
             """, nativeQuery = true)
     List<Object[]> findAllRoadmapWithLessonDetail();
-
 }

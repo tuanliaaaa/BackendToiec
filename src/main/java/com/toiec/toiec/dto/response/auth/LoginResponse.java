@@ -1,4 +1,4 @@
-package com.toiec.toiec.dto.response.auths;
+package com.toiec.toiec.dto.response.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

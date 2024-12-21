@@ -2,7 +2,7 @@ package com.toiec.toiec.service.impl;
 
 import com.toiec.toiec.config.security.JwtUtilities;
 import com.toiec.toiec.dto.request.auths.LoginRequest;
-import com.toiec.toiec.dto.response.auths.LoginResponse;
+import com.toiec.toiec.dto.response.auth.LoginResponse;
 import com.toiec.toiec.entity.RefreshToken;
 import com.toiec.toiec.entity.User;
 import com.toiec.toiec.exception.user.UsernameNotFoundException;

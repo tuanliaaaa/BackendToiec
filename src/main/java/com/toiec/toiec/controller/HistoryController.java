@@ -2,10 +2,9 @@ package com.toiec.toiec.controller;
 
 import com.toiec.toiec.dto.ResponseGeneral;
 import com.toiec.toiec.dto.request.history.HistoryRequest;
-import com.toiec.toiec.dto.request.history.HistoryTopicRequest;
-import com.toiec.toiec.dto.request.history.HistoryWordRequest;
+import com.toiec.toiec.dto.request.history.vocabulary.HistoryTopicRequest;
 import com.toiec.toiec.dto.response.history.HistoryResponse;
-import com.toiec.toiec.entity.History;
+import com.toiec.toiec.dto.response.history.vocabulary.HistoryVocabularyResponse;
 import com.toiec.toiec.service.HistoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +29,7 @@ public class HistoryController {
 
     private final HistoryService historyService;
 
-    @GetMapping("")
+    @GetMapping("lessonbypart")
     public ResponseEntity<?> getHistoryLastOfUser(
         Principal principal,
         @RequestParam(value = "type", required = true) String type,
@@ -57,16 +56,47 @@ public class HistoryController {
         return new ResponseEntity<>(responseGeneral, HttpStatus.OK);
     }
 
-    @PostMapping("words")
-    public ResponseEntity<?> CreateWordHistoryOfUser(
+    @PostMapping("vocabularies")
+    public ResponseEntity<?> createWordHistoryOfUser(
             Principal principal,
             @RequestBody @Valid HistoryTopicRequest historyRequest
     ){
-        ResponseGeneral<HistoryResponse> responseGeneral = ResponseGeneral.ofCreated(
-                "history",
-                historyService.createWordHistoryOfUser(principal.getName(),historyRequest)
+        ResponseGeneral<HistoryResponse> responseGeneral =
+                ResponseGeneral.ofCreated(
+                    "history",
+                    historyService.createWordHistoryOfUser(principal.getName(),historyRequest)
         );
         return new ResponseEntity<>(responseGeneral, HttpStatus.OK);
     }
+
+    @GetMapping("vocabularies")
+    public ResponseEntity<?> getHistoryWordOfUser(
+            Principal principal,
+            @RequestParam(value = "size", required = true) Integer size,
+            @RequestParam(value = "page", required = true) Integer page
+
+    )
+    {
+        ResponseGeneral<List<HistoryVocabularyResponse>> responseGeneral = ResponseGeneral.ofSuccess(
+                historyService.findHistoryWordOfUsernameByType(principal.getName(),page,size)
+        );
+        return new ResponseEntity<>(responseGeneral, HttpStatus.OK);
+    }
+
+    @GetMapping("learningpaths")
+    public ResponseEntity<?> getHistoryLearningPathOfUser(
+            Principal principal,
+            @RequestParam(value = "size", required = true) Integer size,
+            @RequestParam(value = "page", required = true) Integer page
+
+    )
+    {
+        ResponseGeneral<List<HistoryVocabularyResponse>> responseGeneral = ResponseGeneral.ofSuccess(
+                historyService.findHistoryWordOfUsernameByType(principal.getName(),page,size)
+        );
+        return new ResponseEntity<>(responseGeneral, HttpStatus.OK);
+    }
+
+
 }
 

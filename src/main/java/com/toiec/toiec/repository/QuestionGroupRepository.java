@@ -37,7 +37,7 @@ public interface QuestionGroupRepository extends JpaRepository<QuestionGroup,Int
     @Query(value = """
             SELECT
                 qg.id_question_group AS idQuestionGroup,
-                qg.header_question_group AS questionGroup,
+                qg.header_question_group AS questionGroupRequest,
                 (
                     SELECT
                         JSON_ARRAYAGG(
@@ -55,7 +55,8 @@ public interface QuestionGroupRepository extends JpaRepository<QuestionGroup,Int
                                         )
                                     FROM answer a
                                     WHERE a.question_id = childQ.id_question
-                                )
+                                ),
+                                'explanation',childQ.explanation
                             )
                         )
                     FROM question childQ
@@ -83,7 +84,7 @@ public interface QuestionGroupRepository extends JpaRepository<QuestionGroup,Int
     @Query(value = """
         SELECT
             qg.id_question_group AS idQuestionGroup,
-            qg.header_question_group AS questionGroup,
+            qg.header_question_group AS questionGroupRequest,
             (
                 SELECT
                     JSON_ARRAYAGG(

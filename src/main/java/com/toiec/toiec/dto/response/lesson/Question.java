@@ -1,4 +1,4 @@
-package com.toiec.toiec.dto.response.lessons;
+package com.toiec.toiec.dto.response.lesson;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,5 +12,6 @@ import java.util.List;
 public class Question {
     private Integer idQuestion;
     private String question;
+    private String explanation;
     private List<Answer> answerList;
 }

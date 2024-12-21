@@ -1,4 +1,4 @@
-package com.toiec.toiec.dto.response.lessons;
+package com.toiec.toiec.dto.response.lesson;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

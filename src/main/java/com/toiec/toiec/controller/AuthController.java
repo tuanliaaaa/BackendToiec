@@ -1,7 +1,7 @@
 package com.toiec.toiec.controller;
 import com.toiec.toiec.dto.ResponseGeneral;
 import com.toiec.toiec.dto.request.auths.LoginRequest;
-import com.toiec.toiec.dto.response.auths.LoginResponse;
+import com.toiec.toiec.dto.response.auth.LoginResponse;
 import com.toiec.toiec.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

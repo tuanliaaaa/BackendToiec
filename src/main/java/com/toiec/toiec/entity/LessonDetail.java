@@ -1,12 +1,10 @@
 package com.toiec.toiec.entity;
 
-import com.toiec.toiec.dto.request.topicwords.CreateWordRequest;
+import com.toiec.toiec.dto.request.vocabulary.CreateWordRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 
 @Data
 @Entity

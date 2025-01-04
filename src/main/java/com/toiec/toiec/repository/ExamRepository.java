@@ -128,6 +128,5 @@ public interface ExamRepository extends JpaRepository<Exam,Integer> {
             GROUP BY e.id_exam, e.exam_name,qge.order_of_question_group
             ORDER BY qge.order_of_question_group;
         """, nativeQuery = true)
-
         List<Object[]> findExamDetailsByPart(@Param("idExam") Integer idExam,@Param("part") String  part);
 }

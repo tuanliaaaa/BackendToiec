@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 
 public interface QuestionGroupRepository extends JpaRepository<QuestionGroup,Integer> {
@@ -129,7 +130,110 @@ public interface QuestionGroupRepository extends JpaRepository<QuestionGroup,Int
     List<Object[]> findParentQuestionGroupsWithChildQuestionsAndResourcesAndLessonDetails(
             @Param("id") Integer id
     );
+    @Query(nativeQuery = true, value = """
+    WITH limited_qg AS (
+        SELECT DISTINCT qgsub.id_question_group
+        FROM question_group qgsub
+        JOIN question qsub ON qgsub.id_question_group = qsub.id_question_group
+        WHERE (:type IS NULL OR qgsub.type = :type )
+        AND (:value IS NULL OR qsub.value LIKE CONCAT('%', :value, '%'))
+        ORDER BY qgsub.id_question_group
+        LIMIT :limit OFFSET :offset
+    )
+    SELECT 
+        qg.id_question_group AS idQuestionGroup,
+        qg.header_question_group AS questionGroupRequest,
+        (
+            SELECT
+                JSON_ARRAYAGG(
+                    JSON_OBJECT(
+                        'idQuestion', childQ.id_question,
+                        'question', childQ.value,
+                        'answerList', (
+                            SELECT
+                                JSON_ARRAYAGG(
+                                    JSON_OBJECT(
+                                        'idAnswer', a.id,
+                                        'answer', a.value,
+                                        'isCorrect', CAST(a.correct AS UNSIGNED)
+                                    )
+                                )
+                            FROM answer a
+                            WHERE a.question_id = childQ.id_question
+                        ),
+                        'explanation', childQ.explanation
+                    )
+                )
+            FROM question childQ
+            WHERE childQ.id_question_group = qg.id_question_group
+        ) AS childQuestions,
+        (
+            SELECT
+                JSON_ARRAYAGG(
+                    JSON_OBJECT(
+                        'idResource', r.id_resource,
+                        'resourceType', r.resoure_type,
+                        'resourceContent', r.content_resource
+                    )
+                )
+            FROM resource_question_group rq
+            JOIN resource r ON r.id_resource = rq.id_resource
+            WHERE rq.id_question_group = qg.id_question_group
+        ) AS resources
+    FROM limited_qg
+    JOIN question_group qg ON qg.id_question_group = limited_qg.id_question_group
+    ORDER BY qg.id_question_group;
+    """)
+    List<Object[]> searchQuestionGroupsByValueQuestionAndType(
+            @Param("value") String value,
+            @Param("type") String type,
+            @Param("limit") int limit,
+            @Param("offset") int offset);
 
-
+    @Query(nativeQuery = true, value = """
+        SELECT 
+            qg.id_question_group AS idQuestionGroup,
+            qg.header_question_group AS questionGroupRequest,
+            (
+                SELECT
+                    JSON_ARRAYAGG(
+                        JSON_OBJECT(
+                            'idQuestion', childQ.id_question,
+                            'question', childQ.value,
+                            'answerList', (
+                                SELECT
+                                    JSON_ARRAYAGG(
+                                        JSON_OBJECT(
+                                            'idAnswer', a.id,
+                                            'answer', a.value,
+                                            'isCorrect', CAST(a.correct AS UNSIGNED)
+                                        )
+                                    )
+                                FROM answer a
+                                WHERE a.question_id = childQ.id_question
+                            ),
+                            'explanation', childQ.explanation
+                        )
+                    )
+                FROM question childQ
+                WHERE childQ.id_question_group = qg.id_question_group
+            ) AS childQuestions,
+            (
+                SELECT
+                    JSON_ARRAYAGG(
+                        JSON_OBJECT(
+                            'idResource', r.id_resource,
+                            'resourceType', r.resoure_type,
+                            'resourceContent', r.content_resource
+                        )
+                    )
+                FROM resource_question_group rq
+                JOIN resource r ON r.id_resource = rq.id_resource
+                WHERE rq.id_question_group = qg.id_question_group
+            ) AS resources
+        FROM question_group qg
+        WHERE qg.id_question_group = :idQuestionGroup
+    """)
+    List<Object[]> getQuestionGroupById(@Param("idQuestionGroup") Integer idQuestionGroup);
 
 }

@@ -15,6 +15,6 @@ public interface ExamService {
     List<ExamResponse> findAllExam();
     ExamDetailResponse getExamDetailById(Integer id) throws IOException;
     ExamResponse createExam(CreateExam createExam) ;
-    Integer addQuestionGroupForExam(Integer examId,Integer questionGroupId,QuestionGroupRequest questionGroupRequest);
+    Integer addQuestionGroupForExam(Integer examId,List<QuestionGroupRequest> questionGroupRequest);
     ExamPartDetailResponse getPartOfExamDetailById(Integer id, String part) throws IOException;
 }

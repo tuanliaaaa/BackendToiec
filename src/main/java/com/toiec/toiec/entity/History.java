@@ -21,12 +21,12 @@ public class History {
     @ManyToOne
     @JoinColumn(name = "idExam", nullable = true)
     private Exam exam;
-    @ManyToOne
-    @JoinColumn(name = "idLesson", nullable = true)
-    private Lesson lesson;
 
     @ManyToOne
-    @JoinColumn(name = "idLessonDetail", nullable = true)
+    @JoinColumn(name = "idHistoryLesson", nullable = true)
+    private HistoryLesson historyLesson;
+    @ManyToOne
+    @JoinColumn(name = "idLessonDetail",nullable = true)
     private LessonDetail lessonDetail;
     private String type;
     private Integer amountQuestionGroup;

@@ -13,6 +13,8 @@ public class QuestionGroup {
     private Integer idQuestionGroup;
     private String headerQuestionGroup;
     private String type;
+    private String explains;
+    private String script;
     @OneToMany(mappedBy = "questionGroup", cascade = CascadeType.ALL)
     private List<Question> questions;
 }

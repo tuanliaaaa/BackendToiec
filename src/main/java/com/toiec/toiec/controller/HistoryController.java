@@ -4,6 +4,7 @@ import com.toiec.toiec.dto.ResponseGeneral;
 import com.toiec.toiec.dto.request.history.HistoryRequest;
 import com.toiec.toiec.dto.request.history.vocabulary.HistoryTopicRequest;
 import com.toiec.toiec.dto.response.history.HistoryResponse;
+import com.toiec.toiec.dto.response.history.lessonbypart.HistoryDetailLessonByPartResponse;
 import com.toiec.toiec.dto.response.history.vocabulary.HistoryVocabularyResponse;
 import com.toiec.toiec.service.HistoryService;
 import jakarta.validation.Valid;
@@ -30,9 +31,9 @@ public class HistoryController {
     private final HistoryService historyService;
 
     @GetMapping("lessonbypart")
-    public ResponseEntity<?> getHistoryLastOfUser(
+    public ResponseEntity<?> getHistoryLessonByPartOfUser(
         Principal principal,
-        @RequestParam(value = "type", required = true) String type,
+        @RequestParam(value = "type", required = false) String type,
         @RequestParam(value = "size", required = true) Integer size,
         @RequestParam(value = "page", required = true) Integer page
 
@@ -40,6 +41,30 @@ public class HistoryController {
     {
         ResponseGeneral<List<HistoryResponse>> responseGeneral = ResponseGeneral.ofSuccess(
                 historyService.findHistoryOfUsernameByType(principal.getName(),type,page,size)
+        );
+        return new ResponseEntity<>(responseGeneral, HttpStatus.OK);
+    }
+
+    @GetMapping("lessonbypart/{idHistory}")
+    public ResponseEntity<?> getHistoryById(
+            @PathVariable("idHistory") Integer idHistory,
+            Principal principal
+    ) throws IOException {
+        ResponseGeneral<HistoryDetailLessonByPartResponse> responseGeneral = ResponseGeneral.ofSuccess(
+                historyService.getHistoryPartByIdAndUsername(idHistory,principal.getName())
+        );
+        return new ResponseEntity<>(responseGeneral, HttpStatus.OK);
+    }
+
+    @GetMapping("exam")
+    public ResponseEntity<?> getHistoryExamOfUser(
+            Principal principal,
+            @RequestParam(value = "size", required = true) Integer size,
+            @RequestParam(value = "page", required = true) Integer page
+    )
+    {
+        ResponseGeneral<List<HistoryResponse>> responseGeneral = ResponseGeneral.ofSuccess(
+                historyService.findHistoryExamOfUsername(principal.getName(),page,size)
         );
         return new ResponseEntity<>(responseGeneral, HttpStatus.OK);
     }

@@ -16,7 +16,7 @@ public class Question {
     private Integer idQuestion;
 
     private String value;
-
+    private String script;
 
     private String type;
     private String explanation;

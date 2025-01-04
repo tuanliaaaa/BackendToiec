@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/exams")
@@ -61,19 +62,26 @@ public class ExamController {
 
 
 
-    @GetMapping("{examID}/question/{questionGroupId}")
-    public ResponseEntity<?> addQuestionForExam (
-            @PathVariable("examId") Integer examId,
-            @PathVariable("questionGroupId") Integer questionGroupId,
-            @RequestBody QuestionGroupRequest questionGroupRequest
-    ){
-        ResponseGeneral<?> responseGeneral=ResponseGeneral.ofSuccess(
-                examService.addQuestionGroupForExam(examId,questionGroupId,questionGroupRequest)
-        );
-        return new ResponseEntity<>(responseGeneral, HttpStatus.OK);
+//    @GetMapping("{examID}/question/{questionGroupId}")
+//    public ResponseEntity<?> addQuestionForExam (
+//            @PathVariable("examId") Integer examId,
+//            @PathVariable("questionGroupId") Integer questionGroupId,
+//            @RequestBody QuestionGroupRequest questionGroupRequest
+//    ){
+//        ResponseGeneral<?> responseGeneral=ResponseGeneral.ofSuccess(
+//                examService.addQuestionGroupForExam(examId,questionGroupId,questionGroupRequest)
+//        );
+//        return new ResponseEntity<>(responseGeneral, HttpStatus.OK);
+//    }
+
+
+    @PostMapping("{examID}")
+    public ResponseEntity<?> updateQuestionGroups(
+            @PathVariable("examID") Integer examId,
+            @RequestBody List<QuestionGroupRequest>  questionGroupRequest
+    ) {
+
+        return new ResponseEntity<>( examService.addQuestionGroupForExam(examId,questionGroupRequest), HttpStatus.OK);
     }
-
-
-
 
 }

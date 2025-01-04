@@ -26,7 +26,7 @@ public class HistoryResponse {
     public HistoryResponse(History history){
         this.idHistory = history.getIdHistory();
         this.user = history.getUser().getIdUser();
-        this.lesson = history.getLesson();
+//        this.lesson = history.getLesson();
         this.type = history.getType();
         this.createdAt = history.getCreatedAt();
         this.status = history.getStatus();

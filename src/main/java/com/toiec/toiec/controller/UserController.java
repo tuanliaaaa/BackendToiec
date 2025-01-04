@@ -2,16 +2,14 @@ package com.toiec.toiec.controller;
 
 
 import com.toiec.toiec.dto.ResponseGeneral;
+import com.toiec.toiec.dto.request.user.EditUserRequest;
 import com.toiec.toiec.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -36,4 +34,17 @@ public class UserController {
                 "success",userService.findInforByUsername(username));
         return new ResponseEntity<>(responseGeneral, HttpStatus.OK);
     }
+
+    @PatchMapping("/infor")
+    public ResponseEntity<?> editInforUser(
+            Principal principal,
+            @RequestBody EditUserRequest editUserRequest
+            )
+    {
+        String username = principal.getName();
+        ResponseGeneral<?> responseGeneral= ResponseGeneral.of(200,
+                "success",userService.editInforUser(editUserRequest,username));
+        return new ResponseEntity<>(responseGeneral, HttpStatus.OK);
+    }
+
 }

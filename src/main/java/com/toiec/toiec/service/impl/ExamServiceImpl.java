@@ -61,30 +61,28 @@ public class ExamServiceImpl implements ExamService {
     }
 
     @Override
-    public Integer addQuestionGroupForExam(Integer examId,Integer questionGroupId,QuestionGroupRequest questionGroupRequest)
+    public Integer addQuestionGroupForExam(Integer examId,List<QuestionGroupRequest> questionGroupRequestList)
     {
-        QuestionGroup questionGroup = questionGroupRepository.findById(questionGroupRequest.getIdQuestionGroup()).orElseThrow(
-                NotFoundException::new
-        );
         Exam exam = examRepository.findById(examId).orElseThrow(
                 NotFoundException::new
         );
-        List<QuestionGroupExam> questionGroupExamLst =questionGroupExamRepository.findByExamIdAndQuestionGroupId(examId,questionGroupId);
-        if(questionGroupExamLst.size()!=0) {
-            if (questionGroupExamLst.get(0).getOrderOfQuestionGroup() == questionGroupRequest.getOrderOfQuestionGroup()) {
-                return 1;
-            } else {
-                questionGroupExamLst.get(0).setOrderOfQuestionGroup(questionGroupRequest.getOrderOfQuestionGroup());
-                questionGroupExamRepository.save(questionGroupExamLst.get(0));
-                return 1;
-            }
-        }
-        QuestionGroupExam questionGroupExamNew = new QuestionGroupExam();
-        questionGroupExamNew.setQuestionGroup(questionGroup);
-        questionGroupExamNew.setExam(exam);
-        questionGroupExamNew.setOrderOfQuestionGroup(questionGroupRequest.getOrderOfQuestionGroup());
+        questionGroupExamRepository.deleteAll(
+                questionGroupExamRepository.findByExamIdAndQuestionGroupType(examId,"part1")
+        );
 
-        questionGroupExamRepository.save(questionGroupExamNew);
+        // Thêm các bản ghi mới
+        List<QuestionGroupExam> newRecords = new ArrayList<>();
+        for (int i = 0; i < questionGroupRequestList.size(); i++) {
+            QuestionGroupExam questionGroupExamNew = new QuestionGroupExam();
+            questionGroupExamNew.setExam(exam);
+            questionGroupExamNew.setOrderOfQuestionGroup(questionGroupRequestList.get(i).getOrderOfQuestionGroup());
+            QuestionGroup questionGroupVR = new QuestionGroup();
+            questionGroupVR.setIdQuestionGroup(questionGroupRequestList.get(i).getIdQuestionGroup());
+            questionGroupExamNew.setQuestionGroup(questionGroupVR);
+            newRecords.add(questionGroupExamNew);
+        }
+
+        questionGroupExamRepository.saveAll(newRecords);
         return 1;
     }
 

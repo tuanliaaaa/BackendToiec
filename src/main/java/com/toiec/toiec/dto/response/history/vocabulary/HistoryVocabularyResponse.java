@@ -13,19 +13,18 @@ public class HistoryVocabularyResponse {
 
     private Integer idHistory;
     private String type;
-    private Integer amountQuestionGroup;
-    private String status;
     private LocalDateTime createdAt;
-    private LocalDateTime doneAt;
-    private Float score;
+    private Double score;
     private String username;
-    private List<HistoryDetailRequest> historyDetails;
+    private List<HistoryDetailResponse> historyDetails;
+    private Integer idLesson;
+    private String lessonName;
 
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class HistoryDetailRequest {
-        private Integer idHistoryDetail;
+    public static class HistoryDetailResponse {
+        private Integer hdIdHistory;
         private Integer score;
         private Integer idLessonDetail;
     }

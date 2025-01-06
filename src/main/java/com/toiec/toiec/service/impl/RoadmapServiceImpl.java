@@ -5,12 +5,15 @@ import com.toiec.toiec.dto.request.roodmap.CreateGrammar;
 import com.toiec.toiec.dto.request.roodmap.UpdateDay;
 import com.toiec.toiec.dto.request.roodmap.UpdateGrammar;
 import com.toiec.toiec.dto.response.roadmap.DayResponse;
+import com.toiec.toiec.dto.response.roadmap.ExcerciseResponse;
 import com.toiec.toiec.dto.response.roadmap.GrammarResponse;
 import com.toiec.toiec.dto.response.roadmap.RoadmapResponse;
 import com.toiec.toiec.entity.Lesson;
 import com.toiec.toiec.entity.LessonDetail;
+import com.toiec.toiec.entity.QuestionGroup;
 import com.toiec.toiec.exception.base.NotFoundException;
 import com.toiec.toiec.repository.GrammarRepository;
+import com.toiec.toiec.repository.LessonDetailQuestionGroupRepository;
 import com.toiec.toiec.repository.RoadmapRepository;
 import com.toiec.toiec.service.RoadmapService;
 import com.toiec.toiec.utils.JsonUtils;
@@ -32,6 +35,22 @@ import java.util.*;
 public class RoadmapServiceImpl implements RoadmapService {
     private final RoadmapRepository roadmapRepository;
     private final GrammarRepository grammarRepository;
+    private final LessonDetailQuestionGroupRepository lessonDetailQuestionGroupRepository;
+
+    @Override
+    public List<ExcerciseResponse> getExcerciseByGrammarId(Integer grammarId)
+    {
+        List<ExcerciseResponse> excerciseResponseList = new ArrayList<>();
+        List<QuestionGroup> questionGroupList=lessonDetailQuestionGroupRepository.findQuestionGroupsByLessonDetailId(grammarId);
+        for(QuestionGroup questionGroup:questionGroupList)
+        {
+            ExcerciseResponse excerciseResponse=new ExcerciseResponse();
+            excerciseResponse.setValue(questionGroup.getHeaderQuestionGroup());
+            excerciseResponse.setGroupQuestionId(questionGroup.getIdQuestionGroup());
+            excerciseResponseList.add(excerciseResponse);
+        }
+        return excerciseResponseList;
+    }
 
     @Override
     public RoadmapResponse createdDay(CreateDay createDay)

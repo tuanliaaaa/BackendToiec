@@ -1,6 +1,7 @@
 package com.toiec.toiec.repository;
 
 import com.toiec.toiec.entity.QuestionGroup;
+import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,7 +19,8 @@ public interface QuestionGroupRepository extends JpaRepository<QuestionGroup,Int
         SELECT 
             q.id_question as questionId, 
             a.id AS answer_id, 
-            a.correct as correct
+            a.correct as correct,
+            q.id_question_group
         FROM question_group qg
         JOIN question q ON qg.id_question_group = q.id_question_group
         JOIN answer a ON a.question_id = q.id_question
@@ -33,6 +35,20 @@ public interface QuestionGroupRepository extends JpaRepository<QuestionGroup,Int
     List<Map<String, Object>> findQuestionGroups(@Param("type") String type,
                                               @Param("limit") int limit,
                                               @Param("offset") int offset);
+    @Query(nativeQuery=true,value="""
+        SELECT 
+            q.id_question AS questionId, 
+            a.id AS answer_id, 
+            a.correct AS correct,
+            q.id_question_group
+        FROM question_group_exam qge
+        JOIN question_group qg ON qge.id_question_group = qg.id_question_group
+        JOIN question q ON qg.id_question_group = q.id_question_group
+        JOIN answer a ON a.question_id = q.id_question
+        WHERE qge.id_exam = :examId
+        ORDER BY qg.id_question_group, q.id_question
+    """)
+    List<Map<String, Object>> findQuestionGroupsByExamId(@Param("examId") Integer examId);
 
 
     @Query(value = """
@@ -230,7 +246,8 @@ public interface QuestionGroupRepository extends JpaRepository<QuestionGroup,Int
                 FROM resource_question_group rq
                 JOIN resource r ON r.id_resource = rq.id_resource
                 WHERE rq.id_question_group = qg.id_question_group
-            ) AS resources
+            ) AS resources,
+            qg.type
         FROM question_group qg
         WHERE qg.id_question_group = :idQuestionGroup
     """)

@@ -2,6 +2,8 @@ package com.toiec.toiec.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.List;
 
@@ -26,5 +28,6 @@ public class Question {
 
     @ManyToOne
     @JoinColumn(name = "idQuestionGroup", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private QuestionGroup questionGroup;
 }

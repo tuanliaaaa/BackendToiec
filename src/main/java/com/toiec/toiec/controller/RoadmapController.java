@@ -91,6 +91,15 @@ public class RoadmapController {
     ) throws IOException {
         return new ResponseEntity<>(ResponseGeneral.of(200,"success",roadmapService.getGrammarById(idGrammar)), HttpStatus.OK);
     }
+
+    @GetMapping("grammas/{idGrammar}/excercise")
+    public ResponseEntity<?> getExcerciseByGrammarId(
+            @PathVariable Integer idGrammar
+    ) throws IOException {
+        return new ResponseEntity<>(ResponseGeneral.of(200,"success",roadmapService.getExcerciseByGrammarId(idGrammar)), HttpStatus.OK);
+    }
+
+
     @GetMapping("grammars")
     public ResponseEntity<?> findAllGrammar(
          @RequestParam(defaultValue = "0") int page,

@@ -1,13 +1,8 @@
-package com.toiec.toiec.dto.response.history.vocabulary;
-import com.toiec.toiec.entity.Lesson;
-import com.toiec.toiec.entity.User;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+package com.toiec.toiec.dto.response.history.learningpath;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,7 +10,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class HistoryVocabularyResponse {
+public class HistoryLearningPathResponse {
     private Integer idHistoryLesson;
     private Boolean isCorrect;
     private String type;
@@ -35,3 +30,4 @@ public class HistoryVocabularyResponse {
         private Integer idLessonDetail;
     }
 }
+

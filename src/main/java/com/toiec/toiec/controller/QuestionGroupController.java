@@ -42,6 +42,9 @@ public class QuestionGroupController {
                 questionGroupService.searchQuestionGroup(value,type,page,size));
         return new ResponseEntity<>(responseGeneral, HttpStatus.OK);
     }
+
+
+
     @GetMapping("/{questionGroupId}")
     public ResponseEntity<?> getQuestionGroupByID(
         @PathVariable("questionGroupId") Integer questionGroupId

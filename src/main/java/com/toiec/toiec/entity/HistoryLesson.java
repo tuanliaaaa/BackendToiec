@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 
@@ -17,13 +19,15 @@ public class HistoryLesson {
     private Integer idHistoryLesson;
     private Boolean isCorrect;
     private String type;
-    private Integer Score;
+    private Float Score;
 
     @ManyToOne
     @JoinColumn(name = "idUser")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
     @ManyToOne
     @JoinColumn(name = "idLesson")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Lesson lesson;
 
     private LocalDateTime createdAt;

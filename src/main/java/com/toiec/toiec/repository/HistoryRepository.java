@@ -11,6 +11,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface HistoryRepository extends JpaRepository<History,Integer> {
+    List<History> findByHistoryLesson_IdHistoryLessonAndLessonDetail_IdLessonDetail(Integer idHistoryLesson, Integer idLessonDetail);
+
+
+
     List<History> findByUser_UsernameAndTypeContainingOrderByDoneAtDesc(String username, String type, Pageable pageable);
     List<History> findByUser_UsernameAndTypeOrderByDoneAtDesc(String username, String type, Pageable pageable);
 
@@ -36,6 +40,7 @@ public interface HistoryRepository extends JpaRepository<History,Integer> {
                 hl.type AS type, 
                 AVG(h.score) AS avgScore,
                 hl.created_at, 
+                u.username,
                 l.id_lesson AS lessonId, 
                 l.name_lesson AS lessonName, 
                 JSON_ARRAYAGG(
@@ -54,7 +59,7 @@ public interface HistoryRepository extends JpaRepository<History,Integer> {
             JOIN 
                 history h ON h.id_history_lesson = hl.id_history_lesson
             WHERE 
-                u.username = :username
+                u.username = :username And (:type IS NULL OR hl.type = :type ) And (:idLesson IS NULL OR hl.id_lesson = :idLesson )
             GROUP BY 
                 hl.id_history_lesson, hl.type, l.id_lesson, l.name_lesson
             ORDER BY 
@@ -63,8 +68,40 @@ public interface HistoryRepository extends JpaRepository<History,Integer> {
             """, nativeQuery = true)
     List<Object[]> findHistoriesVocabularyWithDetailsByUsername(@Param("username") String username,
                                                    @Param("limit") int limit,
-                                                   @Param("offset") int offset);
-
+                                                   @Param("offset") int offset,
+                                                    @Param("type") String type,
+                                                                @Param("idLesson") Integer idLesson);
+    @Query(value = """
+            SELECT 
+                hl.id_history_lesson AS idHistoryLesson, 
+                hl.type AS type,
+                hl.created_at, 
+                u.username,
+                JSON_ARRAYAGG(
+                    JSON_OBJECT(
+                        'hdIdHistory', h.id_history,
+                        'idLessonDetail', h.id_Lesson_Detail,
+                        'score', h.score
+                    )
+                ) AS histories
+            FROM 
+                history_lesson hl
+            JOIN 
+                user u ON hl.id_user = u.id_user
+            JOIN 
+                history h ON h.id_history_lesson = hl.id_history_lesson
+            WHERE 
+                u.username = :username And (:type IS NULL OR hl.type = :type ) 
+            GROUP BY 
+                hl.id_history_lesson, hl.type
+            ORDER BY 
+                hl.created_at DESC
+            LIMIT :limit OFFSET :offset
+            """, nativeQuery = true)
+    List<Object[]> findHistoriesLearningPathWithDetailsByUsername(@Param("username") String username,
+                                                                @Param("limit") int limit,
+                                                                @Param("offset") int offset,
+                                                                @Param("type") String type);
 
 
     @Query(value = """

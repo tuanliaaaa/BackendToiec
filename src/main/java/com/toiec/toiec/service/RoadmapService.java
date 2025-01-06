@@ -5,6 +5,7 @@ import com.toiec.toiec.dto.request.roodmap.CreateGrammar;
 import com.toiec.toiec.dto.request.roodmap.UpdateDay;
 import com.toiec.toiec.dto.request.roodmap.UpdateGrammar;
 import com.toiec.toiec.dto.response.roadmap.DayResponse;
+import com.toiec.toiec.dto.response.roadmap.ExcerciseResponse;
 import com.toiec.toiec.dto.response.roadmap.GrammarResponse;
 import com.toiec.toiec.dto.response.roadmap.RoadmapResponse;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,7 @@ import java.util.List;
 @Service
 public interface RoadmapService {
     List<GrammarResponse> findAllLessonDetail(Pageable pageable) throws IOException;
+    List<ExcerciseResponse> getExcerciseByGrammarId(Integer grammarId) throws IOException;
     DayResponse updateDay(UpdateDay updateDay,Integer dayId);
     RoadmapResponse createdDay(CreateDay createDay);
     void deleteDay(Integer dayId);

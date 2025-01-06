@@ -13,6 +13,7 @@ import java.util.List;
 public class QuestionGroupResponse {
     private Integer id;
     private String name;
+    private String type;
     private List<Question> questionList;
     private List<Resource> resourceList;
     @Data

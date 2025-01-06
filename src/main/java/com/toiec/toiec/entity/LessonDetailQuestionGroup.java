@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Data
 @Entity
@@ -16,10 +18,12 @@ public class LessonDetailQuestionGroup {
 
     @ManyToOne
     @JoinColumn(name = "idLessonDetail")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private LessonDetail lessonDetail;
 
     @ManyToOne
     @JoinColumn(name = "idQuestionGroup")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private QuestionGroup questionGroup;
 
 }

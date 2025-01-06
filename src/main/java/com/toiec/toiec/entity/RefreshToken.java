@@ -2,6 +2,9 @@ package com.toiec.toiec.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import java.time.LocalDateTime;
 
 @Data
@@ -13,6 +16,7 @@ public class RefreshToken {
 
     @ManyToOne
     @JoinColumn(name = "idUser", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
     private String refreshToken;
 

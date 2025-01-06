@@ -58,6 +58,7 @@ public class QuestionGroupServiceImpl implements QuestionGroupService {
         questionGroupResponse.setQuestionList(questions);
         List<QuestionGroupResponse.Resource> resources = JsonUtils.fromJsonList(object[3]!=null?object[3].toString():"[]",QuestionGroupResponse.Resource.class);
         questionGroupResponse.setResourceList(resources);
+        questionGroupResponse.setType(object[4].toString());
         return questionGroupResponse;
     }
     @Override

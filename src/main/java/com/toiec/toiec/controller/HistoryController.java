@@ -2,9 +2,13 @@ package com.toiec.toiec.controller;
 
 import com.toiec.toiec.dto.ResponseGeneral;
 import com.toiec.toiec.dto.request.history.HistoryRequest;
+import com.toiec.toiec.dto.request.history.exam.CreateExamUser;
+import com.toiec.toiec.dto.request.history.lessonbypart.HistoryLessonByPartRequest;
 import com.toiec.toiec.dto.request.history.vocabulary.HistoryTopicRequest;
 import com.toiec.toiec.dto.response.history.HistoryResponse;
+import com.toiec.toiec.dto.response.history.learningpath.HistoryLearningPathResponse;
 import com.toiec.toiec.dto.response.history.lessonbypart.HistoryDetailLessonByPartResponse;
+//import com.toiec.toiec.dto.response.history.vocabulary.HistoryVocabularyResponse;
 import com.toiec.toiec.dto.response.history.vocabulary.HistoryVocabularyResponse;
 import com.toiec.toiec.service.HistoryService;
 import jakarta.validation.Valid;
@@ -44,6 +48,32 @@ public class HistoryController {
         );
         return new ResponseEntity<>(responseGeneral, HttpStatus.OK);
     }
+
+    @PostMapping("lessonbypart")
+    public ResponseEntity<?> createHistoryLessonByPartOfUser(
+            Principal principal,
+            @RequestBody HistoryLessonByPartRequest historyLessonByPartRequest
+            )
+    {
+        ResponseGeneral<?> responseGeneral = ResponseGeneral.ofCreated(
+                "history learning path",
+                historyService.createHistoryLessonByPartOfUsernameByType(principal.getName(),historyLessonByPartRequest)
+        );
+        return new ResponseEntity<>(responseGeneral, HttpStatus.CREATED);
+    }
+    @PostMapping("exams/{examId}")
+    public ResponseEntity<?> createHistoryExamOfUser(
+            Principal principal,
+            @PathVariable("examId") Integer examId,
+            @RequestBody CreateExamUser createExamUser
+    ) throws IOException {
+        ResponseGeneral<?> responseGeneral = ResponseGeneral.ofCreated(
+                "history learning path",
+                historyService.createHistoryExamOfUser(principal.getName(),examId,createExamUser)
+        );
+        return new ResponseEntity<>(responseGeneral, HttpStatus.CREATED);
+    }
+
 
     @GetMapping("lessonbypart/{idHistory}")
     public ResponseEntity<?> getHistoryById(
@@ -86,7 +116,7 @@ public class HistoryController {
             Principal principal,
             @RequestBody @Valid HistoryTopicRequest historyRequest
     ){
-        ResponseGeneral<HistoryResponse> responseGeneral =
+        ResponseGeneral<HistoryVocabularyResponse> responseGeneral =
                 ResponseGeneral.ofCreated(
                     "history",
                     historyService.createWordHistoryOfUser(principal.getName(),historyRequest)
@@ -98,12 +128,13 @@ public class HistoryController {
     public ResponseEntity<?> getHistoryWordOfUser(
             Principal principal,
             @RequestParam(value = "size", required = true) Integer size,
-            @RequestParam(value = "page", required = true) Integer page
+            @RequestParam(value = "page", required = true) Integer page,
+            @RequestParam(value = "idLesson",required = false) Integer idLesson
 
     )
     {
         ResponseGeneral<List<HistoryVocabularyResponse>> responseGeneral = ResponseGeneral.ofSuccess(
-                historyService.findHistoryWordOfUsernameByType(principal.getName(),page,size)
+                historyService.findHistoryWordOfUsernameByType(principal.getName(),page,size,idLesson)
         );
         return new ResponseEntity<>(responseGeneral, HttpStatus.OK);
     }
@@ -112,12 +143,12 @@ public class HistoryController {
     public ResponseEntity<?> getHistoryLearningPathOfUser(
             Principal principal,
             @RequestParam(value = "size", required = true) Integer size,
-            @RequestParam(value = "page", required = true) Integer page
-
+            @RequestParam(value = "page", required = true) Integer page,
+            @RequestParam(value = "idLesson",required = false) Integer idLesson
     )
     {
-        ResponseGeneral<List<HistoryVocabularyResponse>> responseGeneral = ResponseGeneral.ofSuccess(
-                historyService.findHistoryWordOfUsernameByType(principal.getName(),page,size)
+        ResponseGeneral<List<HistoryLearningPathResponse>> responseGeneral = ResponseGeneral.ofSuccess(
+                historyService.findHistoryLearningPathOfUsernameByType(principal.getName(),page,size,idLesson)
         );
         return new ResponseEntity<>(responseGeneral, HttpStatus.OK);
     }
